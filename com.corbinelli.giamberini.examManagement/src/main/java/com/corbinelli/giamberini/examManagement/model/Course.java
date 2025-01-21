@@ -15,7 +15,7 @@ public class Course {
 		this.teacher = teacher;
 	}
 
-	public void setId(Long id) {
+	void setId(Long id) {
 		this.id = id;
 	}
 	

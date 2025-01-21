@@ -14,7 +14,7 @@ public class Exam {
 		this.date = date;
 	}
 
-	public void setId(Long id) {
+	void setId(Long id) {
 		this.id = id;
 	}
 	

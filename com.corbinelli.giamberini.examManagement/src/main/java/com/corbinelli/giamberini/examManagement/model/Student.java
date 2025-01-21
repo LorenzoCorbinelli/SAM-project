@@ -15,7 +15,7 @@ public class Student {
 		this.email = email;
 	}
 	
-	public void setId(Long id) {
+	void setId(Long id) {
 		this.id = id;
 	}
 
