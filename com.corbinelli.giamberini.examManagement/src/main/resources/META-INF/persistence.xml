@@ -1,0 +1,18 @@
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             version="3.0">
+    <persistence-unit name="jpa-hibernate-mysql">
+        <properties>
+            <!-- JDBC Configuration -->
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/examManagementDB" />
+            <property name="jakarta.persistence.jdbc.user" value="user" />
+            <property name="jakarta.persistence.jdbc.password" value="user" />
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+
+            <!-- Hibernate Config -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+            <property name="jakarta.persistence.schema-generation.database.action" value="create" />
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+        </properties>
+    </persistence-unit>
+</persistence>

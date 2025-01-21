@@ -1,0 +1,11 @@
+services:
+  mysql:
+    image: mysql
+    container_name: MySQL-examManagement
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: examManagementDB
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+    ports:
+      - "3306:3306"
