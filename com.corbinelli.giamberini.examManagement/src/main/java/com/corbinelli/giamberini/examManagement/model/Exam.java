@@ -1,15 +1,27 @@
 package com.corbinelli.giamberini.examManagement.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "exams")
 public class Exam {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@OneToOne
 	private Course course;
-	private Date date;
+	private LocalDate date;
 
-	public Exam(Course course, Date date) {
+	public Exam(Course course, LocalDate date) {
 		this.course = course;
 		this.date = date;
 	}
@@ -26,7 +38,7 @@ public class Exam {
 		return course;
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
