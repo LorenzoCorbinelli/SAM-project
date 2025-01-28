@@ -2,11 +2,25 @@ package com.corbinelli.giamberini.examManagement.model;
 
 import java.util.Objects;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "courses")
 public class Course {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
+	@Lob
 	private String description;
+	@OneToOne
 	private Teacher teacher;
 
 	public Course(String name, String description, Teacher teacher) {
