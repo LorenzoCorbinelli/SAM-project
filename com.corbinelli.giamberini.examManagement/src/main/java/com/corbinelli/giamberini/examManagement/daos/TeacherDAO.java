@@ -8,7 +8,7 @@ import jakarta.persistence.EntityManager;
 
 public class TeacherDAO extends BaseDAO<Teacher>{
 
-	protected TeacherDAO(EntityManager entityManager) {
+	public TeacherDAO(EntityManager entityManager) {
 		super(entityManager);
 	}
 
