@@ -8,10 +8,6 @@ import jakarta.persistence.EntityManager;
 
 public class TeacherDAO extends BaseDAO<Teacher>{
 
-	public TeacherDAO(EntityManager entityManager) {
-		super(entityManager);
-	}
-
 	@Override
 	public Teacher findById(Long id) {
 		return entityManager.find(Teacher.class, id);

@@ -11,10 +11,6 @@ import jakarta.persistence.EntityManager;
 
 public class EnrollmentDAO extends BaseDAO<Enrollment> {
 
-	public EnrollmentDAO(EntityManager entityManager) {
-		super(entityManager);
-	}
-
 	@Override
 	public Enrollment findById(Long id) {
 		return entityManager.find(Enrollment.class, id);
