@@ -6,6 +6,7 @@ import java.util.List;
 import com.corbinelli.giamberini.examManagement.daos.ExamDAO;
 import com.corbinelli.giamberini.examManagement.model.Course;
 import com.corbinelli.giamberini.examManagement.model.Exam;
+import com.corbinelli.giamberini.examManagement.model.Teacher;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -20,6 +21,18 @@ public class ExamService {
 	
 	public void insertExam(Exam exam) {
 		examDAO.save(exam);
+	}
+	
+	public Exam insertExam(Course course, LocalDate date) {
+		Exam exam = new Exam(course, date);
+		examDAO.save(exam);
+		return exam;
+	}
+	
+	public Exam inserExam(Course course, String date) {
+		Exam exam = new Exam(course, LocalDate.parse(date));
+		examDAO.save(exam);
+		return exam;
 	}
 	
 	public void removeExam(Exam exam) {
