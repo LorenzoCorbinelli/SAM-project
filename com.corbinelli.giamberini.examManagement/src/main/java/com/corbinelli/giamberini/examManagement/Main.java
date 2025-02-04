@@ -34,16 +34,19 @@ public class Main {
 		System.out.print(biagio.toString());
 		
 		TeacherService teacherService = container.select(TeacherService.class).get();
-		Teacher teacher = new Teacher("Mario", "Rossi", "mario.rossi@example.com");
-		teacherService.registerTeacher(teacher);
+		Teacher teacher = teacherService.registerTeacher("Mario", "Rossi");
 		
 		CourseService courseService = container.select(CourseService.class).get();
-		Course course = new Course("PT", "Penetration testing", teacher);
-		courseService.insertCourse(course);
+		
+		Course PT = courseService.insertCourse("PT", "Penetration Testing", teacher);
+		Course AST = courseService.insertCourse("AST", "Automated Software Testing", teacher);
+		
 		System.out.println(courseService.getAllCourses());
+		System.out.println(courseService.getCoursesByPartialDescription("testing"));
+		System.out.println(courseService.getCoursesByName("AST"));
 		
 		ExamService examService = container.select(ExamService.class).get();
-		Exam exam = new Exam(course, LocalDate.parse("2025-01-12"));
+		Exam exam = new Exam(PT, LocalDate.parse("2025-01-12"));
 		examService.insertExam(exam);
 		System.out.println(examService.getExamCoursesInDate("2025-01-12"));
 		
