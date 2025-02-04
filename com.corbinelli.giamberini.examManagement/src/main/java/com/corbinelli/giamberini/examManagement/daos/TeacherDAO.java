@@ -4,8 +4,6 @@ import java.util.List;
 
 import com.corbinelli.giamberini.examManagement.model.Teacher;
 
-import jakarta.persistence.EntityManager;
-
 public class TeacherDAO extends BaseDAO<Teacher>{
 
 	@Override

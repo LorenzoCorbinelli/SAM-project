@@ -6,8 +6,6 @@ import java.util.List;
 import com.corbinelli.giamberini.examManagement.model.Course;
 import com.corbinelli.giamberini.examManagement.model.Exam;
 
-import jakarta.persistence.EntityManager;
-
 public class ExamDAO extends BaseDAO<Exam> {
 
 	@Override

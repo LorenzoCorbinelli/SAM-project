@@ -7,8 +7,6 @@ import com.corbinelli.giamberini.examManagement.model.Enrollment;
 import com.corbinelli.giamberini.examManagement.model.Exam;
 import com.corbinelli.giamberini.examManagement.model.Student;
 
-import jakarta.persistence.EntityManager;
-
 public class EnrollmentDAO extends BaseDAO<Enrollment> {
 
 	@Override
