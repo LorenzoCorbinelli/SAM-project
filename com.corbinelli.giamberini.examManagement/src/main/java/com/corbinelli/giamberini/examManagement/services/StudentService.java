@@ -22,6 +22,12 @@ public class StudentService {
 		studentDAO.save(student);
 	}
 	
+	public Student registerStudent(String name, String surname) {
+		Student student = new Student(name, surname, name.toLowerCase() +"." + surname.toLowerCase() +"@example.com");
+		studentDAO.save(student);
+		return student;
+	}
+	
 	public void deleteStudent(Student student) {
 		studentDAO.delete(student);
 	}
