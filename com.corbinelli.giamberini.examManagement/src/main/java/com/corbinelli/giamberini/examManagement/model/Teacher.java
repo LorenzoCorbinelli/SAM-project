@@ -18,6 +18,8 @@ public class Teacher {
 	private String name;
 	private String surname;
 	private String email;
+	
+	public Teacher() {}
 
 	public Teacher(String name, String surname, String email) {
 		this.name = name;

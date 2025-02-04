@@ -20,6 +20,8 @@ public class Enrollment {
 	private Student student;
 	@ManyToOne
 	private Exam exam;
+	
+	public Enrollment() {}
 
 	public Enrollment(Student student, Exam exam) {
 		this.student = student;

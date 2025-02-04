@@ -6,6 +6,9 @@ import java.util.List;
 import com.corbinelli.giamberini.examManagement.model.Course;
 import com.corbinelli.giamberini.examManagement.model.Exam;
 
+import jakarta.enterprise.context.ApplicationScoped;
+
+@ApplicationScoped
 public class ExamDAO extends BaseDAO<Exam> {
 
 	@Override

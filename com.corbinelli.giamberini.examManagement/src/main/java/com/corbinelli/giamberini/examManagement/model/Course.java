@@ -22,6 +22,8 @@ public class Course {
 	private String description;
 	@ManyToOne
 	private Teacher teacher;
+	
+	public Course() {}
 
 	public Course(String name, String description, Teacher teacher) {
 		this.name = name;

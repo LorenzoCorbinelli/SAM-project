@@ -20,6 +20,8 @@ public class Exam {
 	@ManyToOne
 	private Course course;
 	private LocalDate date;
+	
+	public Exam() {}
 
 	public Exam(Course course, LocalDate date) {
 		this.course = course;
