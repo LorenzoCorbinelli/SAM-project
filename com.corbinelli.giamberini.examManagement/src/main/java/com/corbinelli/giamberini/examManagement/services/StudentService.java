@@ -14,8 +14,16 @@ public class StudentService {
 	
 	public StudentService() {}
 	
+	public Student getStudentInfoById(Long id) {
+		return studentDAO.findById(id);
+	}
+	
 	public void registerStudent(Student student) {
 		studentDAO.save(student);
 	}
-
+	
+	public void deleteStudent(Student student) {
+		studentDAO.delete(student);
+	}
+	
 }
