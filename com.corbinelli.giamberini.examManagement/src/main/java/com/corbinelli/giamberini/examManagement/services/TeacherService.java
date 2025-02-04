@@ -18,6 +18,12 @@ public class TeacherService {
 		teacherDAO.save(teacher);
 	}
 	
+	public Teacher registerTeacher(String name, String surname) {
+		Teacher teacher = new Teacher(name, surname, name.toLowerCase() + "." + surname.toLowerCase() + "@example.com");
+		teacherDAO.save(teacher);
+		return teacher;
+	}
+	
 	public void deleteTeacher(Teacher teacher) {
 		teacherDAO.delete(teacher);
 	}
