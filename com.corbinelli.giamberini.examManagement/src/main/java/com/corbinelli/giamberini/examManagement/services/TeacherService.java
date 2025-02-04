@@ -1,5 +1,7 @@
 package com.corbinelli.giamberini.examManagement.services;
 
+import java.util.List;
+
 import com.corbinelli.giamberini.examManagement.daos.TeacherDAO;
 import com.corbinelli.giamberini.examManagement.model.Teacher;
 
@@ -19,7 +21,16 @@ public class TeacherService {
 	}
 	
 	public Teacher registerTeacher(String name, String surname) {
-		Teacher teacher = new Teacher(name, surname, name.toLowerCase() + "." + surname.toLowerCase() + "@example.com");
+		List<Teacher> resultList = teacherDAO.findByNameAndSurname(name, surname);
+		String emailNumber = "";
+		if(!resultList.isEmpty()) {
+			emailNumber = resultList.size() + "";
+		}
+		
+		Teacher teacher = new Teacher(name,
+				surname, 
+				name.toLowerCase() + "." + surname.toLowerCase() + emailNumber + "@example.com");
+		
 		teacherDAO.save(teacher);
 		return teacher;
 	}
