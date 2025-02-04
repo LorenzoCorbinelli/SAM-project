@@ -32,5 +32,13 @@ public class StudentDAO extends BaseDAO<Student> {
 		entityManager.remove(student);
 		entityManager.getTransaction().commit();
 	}
+	
+	public List<Student> findByNameAndSurname(String name, String surname) {
+		return entityManager.createQuery("SELECT s FROM Student s WHERE s.name = :name AND s.surname = :surname", 
+				Student.class)
+				.setParameter("name", name)
+				.setParameter("surname", surname)
+				.getResultList();
+	}
 
 }

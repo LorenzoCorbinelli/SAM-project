@@ -6,7 +6,6 @@ import java.util.List;
 import com.corbinelli.giamberini.examManagement.daos.ExamDAO;
 import com.corbinelli.giamberini.examManagement.model.Course;
 import com.corbinelli.giamberini.examManagement.model.Exam;
-import com.corbinelli.giamberini.examManagement.model.Teacher;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
