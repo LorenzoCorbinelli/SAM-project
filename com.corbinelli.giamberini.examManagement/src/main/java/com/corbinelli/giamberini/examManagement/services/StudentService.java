@@ -1,5 +1,7 @@
 package com.corbinelli.giamberini.examManagement.services;
 
+import java.util.List;
+
 import com.corbinelli.giamberini.examManagement.daos.StudentDAO;
 import com.corbinelli.giamberini.examManagement.model.Student;
 
@@ -23,7 +25,16 @@ public class StudentService {
 	}
 	
 	public Student registerStudent(String name, String surname) {
-		Student student = new Student(name, surname, name.toLowerCase() +"." + surname.toLowerCase() +"@example.com");
+		List<Student> resultList = studentDAO.findByNameAndSurname(name, surname);
+		String emailNumber = "";
+		if(!resultList.isEmpty()) {
+			emailNumber = resultList.size() + "";
+		}
+		
+		Student student = new Student(name, 
+				surname, 
+				name.toLowerCase() +"." + surname.toLowerCase() + emailNumber + "@example.com");
+		
 		studentDAO.save(student);
 		return student;
 	}
