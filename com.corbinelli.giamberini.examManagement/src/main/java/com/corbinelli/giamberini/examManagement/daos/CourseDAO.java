@@ -40,4 +40,15 @@ public class CourseDAO extends BaseDAO<Course> {
 				.getResultList();
 	}
 
+	public List<Course> findCoursesByName(String name) {
+		return entityManager.createQuery("SELECT c FROM Course c WHERE c.name = :name", Course.class)
+				.setParameter("name", name.toUpperCase())
+				.getResultList();
+	}
+	
+	public List<Course> findCoursesByPartialDescription(String partialDescription) {
+		return entityManager.createQuery("SELECT c FROM Course c WHERE LOWER(CAST(c.description AS string)) LIKE :partialDescription", Course.class)
+				.setParameter("partialDescription", "%" + partialDescription.toLowerCase() + "%")
+				.getResultList();
+	}
 }

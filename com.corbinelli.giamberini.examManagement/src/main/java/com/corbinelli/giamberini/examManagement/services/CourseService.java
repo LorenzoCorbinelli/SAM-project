@@ -21,6 +21,12 @@ public class CourseService {
 		courseDAO.save(course);
 	}
 	
+	public Course insertCourse(String name, String description, Teacher teacher) {
+		Course course = new Course(name, description, teacher);
+		courseDAO.save(course);
+		return course;
+	}
+	
 	public void removeCourse(Course course) {
 		courseDAO.delete(course);
 	}
@@ -37,4 +43,11 @@ public class CourseService {
 		return courseDAO.findCoursesByTeacher(teacher);
 	}
 
+	public List<Course> getCoursesByName(String name) {
+		return courseDAO.findCoursesByName(name);
+	}
+	
+	public List<Course> getCoursesByPartialDescription(String partialDescription) {
+		return courseDAO.findCoursesByPartialDescription(partialDescription);
+	}
 }
