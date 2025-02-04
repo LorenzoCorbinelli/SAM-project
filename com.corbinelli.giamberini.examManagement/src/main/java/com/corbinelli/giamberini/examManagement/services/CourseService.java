@@ -29,6 +29,10 @@ public class CourseService {
 		return courseDAO.findById(id);
 	}
 	
+	public List<Course> getAllCourses() {
+		return courseDAO.findAll();
+	}
+	
 	public List<Course> getCoursesOfTeacher(Teacher teacher) {
 		return courseDAO.findCoursesByTeacher(teacher);
 	}
