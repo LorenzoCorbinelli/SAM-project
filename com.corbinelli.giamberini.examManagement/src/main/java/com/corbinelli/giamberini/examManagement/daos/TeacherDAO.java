@@ -4,8 +4,10 @@ import java.util.List;
 
 import com.corbinelli.giamberini.examManagement.model.Teacher;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 
+@ApplicationScoped
 public class TeacherDAO extends BaseDAO<Teacher>{
 
 	@Override
