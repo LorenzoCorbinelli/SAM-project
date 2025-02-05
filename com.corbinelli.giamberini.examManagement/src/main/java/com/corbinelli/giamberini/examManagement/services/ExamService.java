@@ -28,7 +28,7 @@ public class ExamService {
 		return exam;
 	}
 	
-	public Exam inserExam(Course course, String date) {
+	public Exam insertExam(Course course, String date) {
 		Exam exam = new Exam(course, LocalDate.parse(date));
 		examDAO.save(exam);
 		return exam;
