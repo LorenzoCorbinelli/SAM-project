@@ -5,7 +5,7 @@
   <groupId>com.corbinelli.giamberini</groupId>
   <artifactId>examManagement</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
 
   <name>examManagement</name>
   <url>http://maven.apache.org</url>
@@ -48,18 +48,75 @@
       <artifactId>weld-se-core</artifactId>
       <version>6.0.0.Final</version>
     </dependency>
+    <!-- JAX-RS API -->
+    <dependency>
+      <groupId>jakarta.ws.rs</groupId>
+      <artifactId>jakarta.ws.rs-api</artifactId>
+      <version>3.1.0</version>
+    </dependency>
+    <!-- Jersey Core -->
+    <dependency>
+      <groupId>org.glassfish.jersey.core</groupId>
+      <artifactId>jersey-common</artifactId>
+      <version>3.1.2</version>
+    </dependency>
+    <!-- Jersey Server -->
+    <dependency>
+      <groupId>org.glassfish.jersey.containers</groupId>
+      <artifactId>jersey-container-grizzly2-http</artifactId>
+      <version>3.1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.inject</groupId>
+      <artifactId>jersey-cdi2-se</artifactId>
+      <version>3.1.2</version>
+    </dependency>
+    <!-- JSON Support -->
+    <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-json-binding</artifactId>
+      <version>3.1.2</version>
+    </dependency>
   </dependencies>
 
   <build>
     <plugins>
+		<!-- TODO: se usiamo jar probabilmente sara' da rimuovere e anche directory WEB-INF-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <version>3.4.0</version>
         <configuration>
           <failOnMissingWebXml>false</failOnMissingWebXml>
+          <archive>
+            <manifest>
+              <mainClass>com.corbinelli.giamberini.examManagement.RestServer</mainClass>
+            </manifest>
+          </archive>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+              <goals>
+                <goal>single</goal>
+              </goals>
+              <configuration>
+                <descriptorRefs>
+                  <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+                <archive>
+                  <manifest>
+                    <mainClass>com.corbinelli.giamberini.examManagement.RestServer</mainClass>
+                  </manifest>
+                </archive>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
     </plugins>
   </build>
 </project>
