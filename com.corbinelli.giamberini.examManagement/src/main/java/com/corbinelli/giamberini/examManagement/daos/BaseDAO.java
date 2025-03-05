@@ -18,6 +18,6 @@ public abstract class BaseDAO<T> {
 	
 	public abstract void save(T t);
 	
-	public abstract void delete(T t);
+	public abstract void delete(Long id);
 
 }

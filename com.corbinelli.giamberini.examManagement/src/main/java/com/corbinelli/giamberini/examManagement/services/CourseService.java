@@ -27,8 +27,8 @@ public class CourseService {
 		return course;
 	}
 	
-	public void removeCourse(Course course) {
-		courseDAO.delete(course);
+	public void removeCourse(Long id) {
+		courseDAO.delete(id);
 	}
 	
 	public Course getCourseInfoById(Long id) {

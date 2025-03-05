@@ -29,9 +29,12 @@ public class EnrollmentDAO extends BaseDAO<Enrollment> {
 	}
 
 	@Override
-	public void delete(Enrollment enrollment) {
+	public void delete(Long id) {
 		entityManager.getTransaction().begin();
-		entityManager.remove(enrollment);
+		Enrollment enrollment = entityManager.find(Enrollment.class, id);
+		if(enrollment != null) {
+			entityManager.remove(enrollment);
+		}
 		entityManager.getTransaction().commit();
 	}
 	

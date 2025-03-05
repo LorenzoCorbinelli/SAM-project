@@ -34,8 +34,8 @@ public class ExamService {
 		return exam;
 	}
 	
-	public void removeExam(Exam exam) {
-		examDAO.delete(exam);
+	public void removeExam(Long id) {
+		examDAO.delete(id);
 	}
 	
 	public Exam getExamInfoById(Long id) {

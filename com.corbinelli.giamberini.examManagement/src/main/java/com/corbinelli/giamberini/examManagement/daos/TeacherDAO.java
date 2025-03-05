@@ -26,9 +26,12 @@ public class TeacherDAO extends BaseDAO<Teacher>{
 	}
 
 	@Override
-	public void delete(Teacher teacher) {
+	public void delete(Long id) {
 		entityManager.getTransaction().begin();
-		entityManager.remove(teacher);
+		Teacher teacher = entityManager.find(Teacher.class, id);
+		if(teacher != null) {
+			entityManager.remove(teacher);
+		}
 		entityManager.getTransaction().commit();
 	}
 	

@@ -35,8 +35,8 @@ public class TeacherService {
 		return teacher;
 	}
 	
-	public void deleteTeacher(Teacher teacher) {
-		teacherDAO.delete(teacher);
+	public void deleteTeacher(Long id) {
+		teacherDAO.delete(id);
 	}
 	
 	public Teacher getTeacherInfoById(Long id) {

@@ -23,8 +23,8 @@ public class EnrollmentService {
 		enrollmentDAO.save(enrollment);
 	}
 	
-	public void disenroll(Enrollment enrollment) {
-		enrollmentDAO.delete(enrollment);
+	public void disenroll(Long id) {
+		enrollmentDAO.delete(id);
 	}
 	
 	public Enrollment getEnrollmentInfoById(Long id) {
