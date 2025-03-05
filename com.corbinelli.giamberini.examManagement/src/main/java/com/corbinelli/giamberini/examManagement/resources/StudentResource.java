@@ -5,11 +5,14 @@ import com.corbinelli.giamberini.examManagement.services.StudentService;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 @Path("/students")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -24,5 +27,21 @@ public class StudentResource {
 	public Student getStudent(@PathParam("id") Long id) {
 		return studentService.getStudentInfoById(id);
 	}
-
+	
+	@POST
+	public Response newStudent(Student student) {
+		studentService.registerStudent(student);
+		return Response.status(Response.Status.CREATED)
+				.entity(student)
+				.build();
+	}
+	
+	@DELETE
+	@Path("/{id}")
+	public Response removeStudent(@PathParam("id") Long id) {
+		studentService.deleteStudent(id);
+		return Response.status(Response.Status.OK)
+				.build();
+	}
+	
 }
