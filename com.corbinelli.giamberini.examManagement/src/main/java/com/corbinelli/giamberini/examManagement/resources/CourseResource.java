@@ -50,22 +50,27 @@ public class CourseResource {
 	
 	@POST
 	public Response newCourse(Course course) {
-		System.out.println("Received Course: " + course);
-		courseService.insertCourse(course);
-		return Response.status(Response.Status.CREATED)
-				.entity(course)
-				.build();
+		try {
+			courseService.insertCourse(course);
+			return Response.status(Response.Status.CREATED)
+					.entity(course)
+					.build();
+		} catch(IllegalArgumentException e) {
+			return Response.status(Response.Status.BAD_REQUEST)
+					.entity(course)
+					.build();
+		}
 	}
 	
 	@DELETE
 	@Path("/{id}")
-	public Response deleteCourse(@PathParam("id") Long id) {
+	public Response removeCourse(@PathParam("id") Long id) {
 		Course course = courseService.removeCourse(id);
 		if (course == null) {
 			return Response.status(Response.Status.NOT_FOUND)
 					.build();
 		}
-		return Response.status(Response.Status.CREATED)
+		return Response.status(Response.Status.OK)
 				.entity(course)
 				.build();
 	}

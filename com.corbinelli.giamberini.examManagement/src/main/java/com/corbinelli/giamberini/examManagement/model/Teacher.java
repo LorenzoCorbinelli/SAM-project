@@ -27,7 +27,7 @@ public class Teacher {
 		this.email = email;
 	}
 
-	void setId(Long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	

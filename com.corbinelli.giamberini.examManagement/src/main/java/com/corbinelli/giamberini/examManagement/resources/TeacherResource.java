@@ -46,7 +46,7 @@ public class TeacherResource {
 	
 	@DELETE
 	@Path("/{id}")
-	public Response deleteTeacher(@PathParam("id") Long id) {
+	public Response removeTeacher(@PathParam("id") Long id) {
 		Teacher teacher = teacherService.deleteTeacher(id);
 		if (teacher == null) {
 			return Response.status(Response.Status.NOT_FOUND)
