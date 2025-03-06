@@ -1,5 +1,7 @@
 package com.corbinelli.giamberini.examManagement.resources;
 
+import java.util.List;
+
 import com.corbinelli.giamberini.examManagement.model.Course;
 import com.corbinelli.giamberini.examManagement.services.CourseService;
 
@@ -23,7 +25,7 @@ public class CourseResource {
 	private CourseService courseService;
 
 	@GET
-	@Path("/{id}")
+	@Path("/id/{id}")
 	public Response getCourse(@PathParam("id") Long id) {
 		Course course = courseService.getCourseInfoById(id);
 		if (course == null) {
@@ -35,8 +37,8 @@ public class CourseResource {
 				.build();
 	}
 	
-	/*@GET
-	@Path("/{name}")
+	@GET
+	@Path("/name/{name}")
 	public Response getCourse(@PathParam("name") String name) {
 		List<Course> coursesByName = courseService.getCoursesByName(name);
 		if (coursesByName.isEmpty()) {
@@ -46,7 +48,7 @@ public class CourseResource {
 		return Response.status(Response.Status.OK)
 				.entity(coursesByName)
 				.build();
-	}*/
+	}
 	
 	@POST
 	public Response newCourse(Course course) {
