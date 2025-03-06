@@ -3,6 +3,7 @@ package com.corbinelli.giamberini.examManagement.daos;
 import java.util.List;
 
 import com.corbinelli.giamberini.examManagement.model.Student;
+import com.corbinelli.giamberini.examManagement.model.Teacher;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -27,13 +28,14 @@ public class StudentDAO extends BaseDAO<Student> {
 	}
 
 	@Override
-	public void delete(Long id) {
+	public Student delete(Long id) {
 		entityManager.getTransaction().begin();
 		Student student = entityManager.find(Student.class, id);
 		if(student != null) {
 			entityManager.remove(student);
 		}
 		entityManager.getTransaction().commit();
+		return student;
 	}
 	
 	public List<Student> findByNameAndSurname(String name, String surname) {

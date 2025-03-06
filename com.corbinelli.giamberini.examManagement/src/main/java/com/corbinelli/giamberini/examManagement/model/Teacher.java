@@ -31,6 +31,18 @@ public class Teacher {
 		this.id = id;
 	}
 	
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public Long getId() {
 		return id;
 	}

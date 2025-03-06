@@ -6,6 +6,8 @@ import com.corbinelli.giamberini.examManagement.model.Course;
 import com.corbinelli.giamberini.examManagement.model.Enrollment;
 import com.corbinelli.giamberini.examManagement.model.Exam;
 import com.corbinelli.giamberini.examManagement.model.Student;
+import com.corbinelli.giamberini.examManagement.model.Teacher;
+
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
@@ -29,13 +31,14 @@ public class EnrollmentDAO extends BaseDAO<Enrollment> {
 	}
 
 	@Override
-	public void delete(Long id) {
+	public Enrollment delete(Long id) {
 		entityManager.getTransaction().begin();
 		Enrollment enrollment = entityManager.find(Enrollment.class, id);
 		if(enrollment != null) {
 			entityManager.remove(enrollment);
 		}
 		entityManager.getTransaction().commit();
+		return enrollment;
 	}
 	
 	public List<Exam> findExamsByStudent(Student student){
