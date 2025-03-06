@@ -24,8 +24,15 @@ public class StudentResource {
 	
 	@GET
 	@Path("/{id}")
-	public Student getStudent(@PathParam("id") Long id) {
-		return studentService.getStudentInfoById(id);
+	public Response getStudent(@PathParam("id") Long id) {
+		Student student = studentService.getStudentInfoById(id);
+		if(student == null) {
+			return Response.status(Response.Status.NOT_FOUND)
+					.build();
+		}
+		return Response.status(Response.Status.OK)
+				.entity(student)
+				.build();
 	}
 	
 	@POST
@@ -39,8 +46,13 @@ public class StudentResource {
 	@DELETE
 	@Path("/{id}")
 	public Response removeStudent(@PathParam("id") Long id) {
-		studentService.deleteStudent(id);
+		Student deletedStudent = studentService.deleteStudent(id);
+		if(deletedStudent == null) {
+			return Response.status(Response.Status.NOT_FOUND)
+					.build();
+		}
 		return Response.status(Response.Status.OK)
+				.entity(deletedStudent)
 				.build();
 	}
 	
