@@ -3,7 +3,6 @@ package com.corbinelli.giamberini.examManagement.daos;
 import java.util.List;
 
 import com.corbinelli.giamberini.examManagement.model.Student;
-import com.corbinelli.giamberini.examManagement.model.Teacher;
 
 import jakarta.enterprise.context.ApplicationScoped;
 

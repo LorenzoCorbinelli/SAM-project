@@ -1,6 +1,5 @@
 package com.corbinelli.giamberini.examManagement.resources;
 
-import org.hibernate.annotations.Parameter;
 
 import com.corbinelli.giamberini.examManagement.model.Teacher;
 import com.corbinelli.giamberini.examManagement.services.TeacherService;
