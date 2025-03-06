@@ -46,8 +46,13 @@ public class StudentResource {
 	@DELETE
 	@Path("/{id}")
 	public Response removeStudent(@PathParam("id") Long id) {
-		studentService.deleteStudent(id);
+		Student deletedStudent = studentService.deleteStudent(id);
+		if(deletedStudent == null) {
+			return Response.status(Response.Status.NOT_FOUND)
+					.build();
+		}
 		return Response.status(Response.Status.OK)
+				.entity(deletedStudent)
 				.build();
 	}
 	

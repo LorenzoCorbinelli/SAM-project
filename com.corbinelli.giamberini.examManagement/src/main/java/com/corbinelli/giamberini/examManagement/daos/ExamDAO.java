@@ -29,13 +29,14 @@ public class ExamDAO extends BaseDAO<Exam> {
 	}
 
 	@Override
-	public void delete(Long id) {
+	public Exam delete(Long id) {
 		entityManager.getTransaction().begin();
 		Exam exam = entityManager.find(Exam.class, id);
 		if(exam != null) {
 			entityManager.remove(exam);
 		}
 		entityManager.getTransaction().commit();
+		return exam;
 	}
 	
 	public List<LocalDate> findExamDatesByCourse(Course course) {

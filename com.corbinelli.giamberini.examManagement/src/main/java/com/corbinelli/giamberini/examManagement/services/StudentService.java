@@ -39,8 +39,8 @@ public class StudentService {
 		return student;
 	}
 	
-	public void deleteStudent(Long id) {
-		studentDAO.delete(id);
+	public Student deleteStudent(Long id) {
+		return studentDAO.delete(id);
 	}
 	
 }
