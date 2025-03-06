@@ -35,6 +35,18 @@ public class Course {
 		this.id = id;
 	}
 	
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
+
 	public Long getId() {
 		return id;
 	}

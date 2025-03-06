@@ -32,6 +32,14 @@ public class Exam {
 		this.id = id;
 	}
 	
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
+
 	public Long getId() {
 		return id;
 	}

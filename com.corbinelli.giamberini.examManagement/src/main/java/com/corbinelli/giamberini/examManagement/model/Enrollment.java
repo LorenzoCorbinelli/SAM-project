@@ -32,6 +32,14 @@ public class Enrollment {
 		this.id = id;
 	}
 	
+	public void setStudent(Student student) {
+		this.student = student;
+	}
+
+	public void setExam(Exam exam) {
+		this.exam = exam;
+	}
+
 	public Long getId() {
 		return id;
 	}
