@@ -2,6 +2,8 @@ package com.corbinelli.giamberini.examManagement.daos;
 
 import java.util.List;
 
+import com.corbinelli.giamberini.examManagement.model.Teacher;
+
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
@@ -18,6 +20,6 @@ public abstract class BaseDAO<T> {
 	
 	public abstract void save(T t);
 	
-	public abstract void delete(Long id);
+	public abstract T delete(Long id);
 
 }
