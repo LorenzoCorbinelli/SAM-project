@@ -50,6 +50,19 @@ public class CourseResource {
 				.build();
 	}
 	
+	@GET
+	@Path("/all")
+	public Response getAllCourses() {
+		List<Course> allCourses = courseService.getAllCourses();
+		if (allCourses.isEmpty()) {
+			return Response.status(Response.Status.NO_CONTENT)
+					.build();
+		}
+		return Response.status(Response.Status.OK)
+				.entity(allCourses)
+				.build();
+	}
+	
 	@POST
 	public Response newCourse(Course course) {
 		try {
