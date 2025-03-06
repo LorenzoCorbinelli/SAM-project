@@ -24,8 +24,16 @@ public class StudentResource {
 	
 	@GET
 	@Path("/{id}")
-	public Student getStudent(@PathParam("id") Long id) {
-		return studentService.getStudentInfoById(id);
+	public Response getStudent(@PathParam("id") Long id) {
+		Student student = studentService.getStudentInfoById(id);
+		if(student == null) {
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity(student)
+					.build();
+		}
+		return Response.status(Response.Status.OK)
+				.entity(student)
+				.build();
 	}
 	
 	@POST
