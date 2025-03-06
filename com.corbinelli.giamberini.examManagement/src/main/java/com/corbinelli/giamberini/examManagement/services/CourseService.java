@@ -3,6 +3,7 @@ package com.corbinelli.giamberini.examManagement.services;
 import java.util.List;
 
 import com.corbinelli.giamberini.examManagement.daos.CourseDAO;
+import com.corbinelli.giamberini.examManagement.daos.TeacherDAO;
 import com.corbinelli.giamberini.examManagement.model.Course;
 import com.corbinelli.giamberini.examManagement.model.Teacher;
 
@@ -14,10 +15,19 @@ public class CourseService {
 	
 	@Inject
 	private CourseDAO courseDAO;
+	
+	@Inject
+	private TeacherDAO teacherDAO;
 
 	public CourseService() {}
 	
 	public void insertCourse(Course course) {
+		Long teacherID = course.getTeacher().getId();
+		Teacher existingTeacher = teacherDAO.findById(teacherID);
+		if(existingTeacher == null) {
+			throw new IllegalArgumentException("Teacher not found with ID: " + teacherID);
+		}
+		course.setTeacher(existingTeacher);
 		courseDAO.save(course);
 	}
 	
