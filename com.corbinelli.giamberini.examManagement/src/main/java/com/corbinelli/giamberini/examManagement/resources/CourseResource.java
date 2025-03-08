@@ -28,7 +28,7 @@ public class CourseResource {
 	@Path("/id/{id}")
 	public Response getCourse(@PathParam("id") Long id) {
 		Course course = courseService.getCourseInfoById(id);
-		if (course == null) {
+		if(course == null) {
 			return Response.status(Response.Status.NOT_FOUND)
 					.build();
 		}
@@ -41,7 +41,7 @@ public class CourseResource {
 	@Path("/name/{name}")
 	public Response getCourse(@PathParam("name") String name) {
 		List<Course> coursesByName = courseService.getCoursesByName(name);
-		if (coursesByName.isEmpty()) {
+		if(coursesByName.isEmpty()) {
 			return Response.status(Response.Status.NOT_FOUND)
 					.build();
 		}
@@ -54,12 +54,25 @@ public class CourseResource {
 	@Path("/all")
 	public Response getAllCourses() {
 		List<Course> allCourses = courseService.getAllCourses();
-		if (allCourses.isEmpty()) {
+		if(allCourses.isEmpty()) {
 			return Response.status(Response.Status.NO_CONTENT)
 					.build();
 		}
 		return Response.status(Response.Status.OK)
 				.entity(allCourses)
+				.build();
+	}
+	
+	@GET
+	@Path("/teacher/{id}")
+	public Response getCoursesOfTeacher(@PathParam("id") Long teacherID) {
+		List<Course> coursesOfTeacher = courseService.getCoursesOfTeacher(teacherID);
+		if(coursesOfTeacher.isEmpty()) {
+			return Response.status(Response.Status.NO_CONTENT)
+					.build();
+		}
+		return Response.status(Response.Status.OK)
+				.entity(coursesOfTeacher)
 				.build();
 	}
 	
