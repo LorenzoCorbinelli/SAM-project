@@ -56,8 +56,8 @@ public class ExamService {
 		return examDAO.findAll();
 	}
 	
-	public List<LocalDate> getExamDatesOfCourse(Course course) {
-		return examDAO.findExamDatesByCourse(course);
+	public List<LocalDate> getExamDatesOfCourse(Long courseID) {
+		return examDAO.findExamDatesByCourse(courseID);
 	}
 	
 	public List<Course> getExamCoursesInDate(LocalDate date) {
