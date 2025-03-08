@@ -1,6 +1,8 @@
 package com.corbinelli.giamberini.examManagement.resources;
 
 
+import java.util.List;
+
 import com.corbinelli.giamberini.examManagement.model.Exam;
 import com.corbinelli.giamberini.examManagement.services.ExamService;
 
@@ -33,6 +35,19 @@ public class ExamResource {
 		}
 		return Response.status(Response.Status.OK)
 				.entity(exam)
+				.build();
+	}
+	
+	@GET
+	@Path("/all")
+	public Response getAllExams() {
+		List<Exam> allExams = examService.getAllExams();
+		if(allExams.isEmpty()) {
+			return Response.status(Response.Status.NO_CONTENT)
+					.build();
+		}
+		return Response.status(Response.Status.OK)
+				.entity(allExams)
 				.build();
 	}
 	
