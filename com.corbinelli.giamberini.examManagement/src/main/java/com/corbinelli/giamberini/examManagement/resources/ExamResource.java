@@ -4,6 +4,7 @@ package com.corbinelli.giamberini.examManagement.resources;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.corbinelli.giamberini.examManagement.model.Course;
 import com.corbinelli.giamberini.examManagement.model.Exam;
 import com.corbinelli.giamberini.examManagement.services.ExamService;
 
@@ -62,6 +63,19 @@ public class ExamResource {
 		}
 		return Response.status(Response.Status.OK)
 				.entity(examDatesOfCourse)
+				.build();
+	}
+	
+	@GET
+	@Path("/date/{date}")
+	public Response getExamCoursesInDate(@PathParam("date") String date) {
+		List<Course> examCoursesInDate = examService.getExamCoursesInDate(date);
+		if(examCoursesInDate.isEmpty()) {
+			return Response.status(Response.Status.NO_CONTENT)
+					.build();
+		}
+		return Response.status(Response.Status.OK)
+				.entity(examCoursesInDate)
 				.build();
 	}
 	
