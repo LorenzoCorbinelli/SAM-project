@@ -1,6 +1,7 @@
 package com.corbinelli.giamberini.examManagement.resources;
 
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.corbinelli.giamberini.examManagement.model.Exam;
@@ -48,6 +49,19 @@ public class ExamResource {
 		}
 		return Response.status(Response.Status.OK)
 				.entity(allExams)
+				.build();
+	}
+	
+	@GET
+	@Path("/course/{id}")
+	public Response getExamsDatesOfCourse(@PathParam("id") Long courseID) {
+		List<LocalDate> examDatesOfCourse = examService.getExamDatesOfCourse(courseID);
+		if(examDatesOfCourse.isEmpty()) {
+			return Response.status(Response.Status.NO_CONTENT)
+					.build();
+		}
+		return Response.status(Response.Status.OK)
+				.entity(examDatesOfCourse)
 				.build();
 	}
 	
