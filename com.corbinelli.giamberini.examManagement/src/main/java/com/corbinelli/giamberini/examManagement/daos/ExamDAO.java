@@ -39,9 +39,9 @@ public class ExamDAO extends BaseDAO<Exam> {
 		return exam;
 	}
 	
-	public List<LocalDate> findExamDatesByCourse(Course course) {
-		return entityManager.createQuery("SELECT e.date FROM Exam e WHERE e.course = :course", LocalDate.class)
-				.setParameter("course", course)
+	public List<LocalDate> findExamDatesByCourse(Long courseID) {
+		return entityManager.createQuery("SELECT e.date FROM Exam e WHERE e.course.id = :courseID", LocalDate.class)
+				.setParameter("courseID", courseID)
 				.getResultList();
 	}
 	

@@ -3,6 +3,7 @@ package com.corbinelli.giamberini.examManagement.services;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.corbinelli.giamberini.examManagement.daos.CourseDAO;
 import com.corbinelli.giamberini.examManagement.daos.ExamDAO;
 import com.corbinelli.giamberini.examManagement.model.Course;
 import com.corbinelli.giamberini.examManagement.model.Exam;
@@ -15,10 +16,19 @@ public class ExamService {
 	
 	@Inject
 	private ExamDAO examDAO;
+	
+	@Inject
+	private CourseDAO courseDAO;
 
 	public ExamService() {}
 	
 	public void insertExam(Exam exam) {
+		Long courseID = exam.getCourse().getId();
+		Course existingCourse = courseDAO.findById(courseID);
+		if(existingCourse == null) {
+			throw new IllegalArgumentException("Course not found with ID: " + courseID);
+		}
+		exam.setCourse(existingCourse);
 		examDAO.save(exam);
 	}
 	
@@ -46,8 +56,8 @@ public class ExamService {
 		return examDAO.findAll();
 	}
 	
-	public List<LocalDate> getExamDatesOfCourse(Course course) {
-		return examDAO.findExamDatesByCourse(course);
+	public List<LocalDate> getExamDatesOfCourse(Long courseID) {
+		return examDAO.findExamDatesByCourse(courseID);
 	}
 	
 	public List<Course> getExamCoursesInDate(LocalDate date) {

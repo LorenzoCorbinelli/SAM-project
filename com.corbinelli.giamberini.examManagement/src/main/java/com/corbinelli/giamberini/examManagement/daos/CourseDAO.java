@@ -3,7 +3,6 @@ package com.corbinelli.giamberini.examManagement.daos;
 import java.util.List;
 
 import com.corbinelli.giamberini.examManagement.model.Course;
-import com.corbinelli.giamberini.examManagement.model.Teacher;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -38,9 +37,9 @@ public class CourseDAO extends BaseDAO<Course> {
 		return course;
 	}
 	
-	public List<Course> findCoursesByTeacher(Teacher teacher) {
-		return entityManager.createQuery("SELECT c FROM Course c WHERE c.teacher = :teacher", Course.class)
-				.setParameter("teacher", teacher)
+	public List<Course> findCoursesByTeacher(Long teacherID) {
+		return entityManager.createQuery("SELECT c FROM Course c WHERE c.teacher.id = :teacherID", Course.class)
+				.setParameter("teacherID", teacherID)
 				.getResultList();
 	}
 

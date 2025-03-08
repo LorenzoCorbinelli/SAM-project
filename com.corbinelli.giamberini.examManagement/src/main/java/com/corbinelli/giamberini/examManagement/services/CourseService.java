@@ -49,8 +49,8 @@ public class CourseService {
 		return courseDAO.findAll();
 	}
 	
-	public List<Course> getCoursesOfTeacher(Teacher teacher) {
-		return courseDAO.findCoursesByTeacher(teacher);
+	public List<Course> getCoursesOfTeacher(Long teacherID) {
+		return courseDAO.findCoursesByTeacher(teacherID);
 	}
 
 	public List<Course> getCoursesByName(String name) {
