@@ -16,6 +16,7 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -76,6 +77,19 @@ public class ExamResource {
 		}
 		return Response.status(Response.Status.OK)
 				.entity(examCoursesInDate)
+				.build();
+	}
+	
+	@GET
+	@Path("/period")
+	public Response getExamsInAPeriod(@QueryParam("start") String startDate, @QueryParam("end") String endDate) {
+		List<Exam> examsInAPeriod = examService.getExamsInAPeriod(startDate, endDate);
+		if(examsInAPeriod.isEmpty()) {
+			return Response.status(Response.Status.NO_CONTENT)
+					.build();
+		}
+		return Response.status(Response.Status.OK)
+				.entity(examsInAPeriod)
 				.build();
 	}
 	
