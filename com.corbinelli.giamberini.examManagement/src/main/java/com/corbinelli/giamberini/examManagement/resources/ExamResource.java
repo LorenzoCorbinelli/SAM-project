@@ -6,8 +6,10 @@ import com.corbinelli.giamberini.examManagement.services.ExamService;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -19,6 +21,19 @@ public class ExamResource {
 	
 	@Inject
 	private ExamService examService;
+	
+	@GET
+	@Path("/id/{id}")
+	public Response getExam(@PathParam("id") Long id) {
+		Exam exam = examService.getExamInfoById(id);
+		if(exam == null) {
+			return Response.status(Response.Status.NOT_FOUND)
+					.build();
+		}
+		return Response.status(Response.Status.OK)
+				.entity(exam)
+				.build();
+	}
 	
 	@POST
 	public Response newExam(Exam exam) {
