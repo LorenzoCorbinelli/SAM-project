@@ -1,15 +1,21 @@
 package com.corbinelli.giamberini.examManagement.resources;
 
+import java.util.List;
+
 import com.corbinelli.giamberini.examManagement.model.Enrollment;
+import com.corbinelli.giamberini.examManagement.model.Exam;
+import com.corbinelli.giamberini.examManagement.model.Student;
 import com.corbinelli.giamberini.examManagement.services.EnrollmentService;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -21,7 +27,6 @@ public class EnrollmentResource {
 	@Inject
 	private EnrollmentService enrollmentService;
 	
-	//get by id
 	@GET
 	@Path("/id/{id}")
 	public Response getEnrollment(@PathParam("id") Long id) {
@@ -35,23 +40,45 @@ public class EnrollmentResource {
 				.build();
 	}
 	
-	//get by student
 	@GET
 	@Path("/student/{id}")
-	public Response getEnrollmentOfStudent(@PathParam("id") Long id) {
-		Enrollment enrollment = enrollmentService.getEnrollmentInfoById(id);
-		if (enrollment == null) {
+	public Response getEnrollmentOfStudent(@PathParam("id") Long studentID) {
+		List<Exam> enrollmentsByStudent = enrollmentService.getExamsByStudent(studentID);
+		if(enrollmentsByStudent.isEmpty()) {
 			return Response.status(Response.Status.NOT_FOUND)
 					.build();
 		}
 		return Response.status(Response.Status.OK)
-				.entity(enrollment)
+				.entity(enrollmentsByStudent)
 				.build();
 	}
 	//get by exam
-	//get trials given exam and course
+	@GET
+	@Path("/exam/{id}")
+	public Response getEnrollmentOfExam(@PathParam("id") Long examID) {
+		List<Student> studentsEnrolledForAnExam = enrollmentService.getStudentsEnrolledForAnExam(examID);
+		if (studentsEnrolledForAnExam == null) {
+			return Response.status(Response.Status.NOT_FOUND)
+					.build();
+		}
+		return Response.status(Response.Status.OK)
+				.entity(studentsEnrolledForAnExam)
+				.build();
+	}
+
+	@GET
+	@Path("/trials")
+	public Response getExamsInAPeriod(@QueryParam("student") Long studentID, @QueryParam("course") Long courseID) {
+		List<Exam> trialsForAnExamByStudentAndCourse = enrollmentService.getTrialsForAnExamByStudentAndCourse(studentID,courseID);
+		if(trialsForAnExamByStudentAndCourse.isEmpty()) {
+			return Response.status(Response.Status.NO_CONTENT)
+					.build();
+		}
+		return Response.status(Response.Status.OK)
+				.entity(trialsForAnExamByStudentAndCourse)
+				.build();
+	}
 	
-	//post enroll
 	@POST
 	public Response newEnrollment(Enrollment enrollment) {
 		System.out.println(enrollment);
@@ -67,6 +94,18 @@ public class EnrollmentResource {
 		}
 	}
 	
+	@DELETE
+	@Path("/{id}")
+	public Response removeEnrollment(@PathParam("id") Long id) {
+		Enrollment disenroll = enrollmentService.disenroll(id);
+		if (disenroll == null) {
+			return Response.status(Response.Status.NOT_FOUND)
+					.build();
+		}
+		return Response.status(Response.Status.OK)
+				.entity(disenroll)
+				.build();
+	}
 	//delete disenroll
 	
 
