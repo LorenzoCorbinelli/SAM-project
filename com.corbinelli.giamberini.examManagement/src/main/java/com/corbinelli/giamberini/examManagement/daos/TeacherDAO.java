@@ -3,9 +3,9 @@ package com.corbinelli.giamberini.examManagement.daos;
 import java.util.List;
 
 import com.corbinelli.giamberini.examManagement.model.Teacher;
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 
-@ApplicationScoped
+@RequestScoped
 public class TeacherDAO extends BaseDAO<Teacher>{
 
 	@Override

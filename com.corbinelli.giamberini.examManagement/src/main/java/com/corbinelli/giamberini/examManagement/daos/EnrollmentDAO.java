@@ -6,9 +6,9 @@ import com.corbinelli.giamberini.examManagement.model.Enrollment;
 import com.corbinelli.giamberini.examManagement.model.Exam;
 import com.corbinelli.giamberini.examManagement.model.Student;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 
-@ApplicationScoped
+@RequestScoped
 public class EnrollmentDAO extends BaseDAO<Enrollment> {
 
 	@Override

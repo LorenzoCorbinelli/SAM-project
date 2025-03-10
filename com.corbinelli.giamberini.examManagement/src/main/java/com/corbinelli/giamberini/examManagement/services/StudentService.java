@@ -5,10 +5,10 @@ import java.util.List;
 import com.corbinelli.giamberini.examManagement.daos.StudentDAO;
 import com.corbinelli.giamberini.examManagement.model.Student;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
-@ApplicationScoped
+@RequestScoped
 public class StudentService {
 
 	@Inject

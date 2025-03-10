@@ -9,10 +9,10 @@ import com.corbinelli.giamberini.examManagement.model.Enrollment;
 import com.corbinelli.giamberini.examManagement.model.Exam;
 import com.corbinelli.giamberini.examManagement.model.Student;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
-@ApplicationScoped
+@RequestScoped
 public class EnrollmentService {
 
 	@Inject

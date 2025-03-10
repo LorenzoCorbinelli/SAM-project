@@ -2,6 +2,7 @@ package com.corbinelli.giamberini.examManagement.entityManager;
 
 import jakarta.annotation.PreDestroy;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.enterprise.inject.Disposes;
 import jakarta.enterprise.inject.Produces;
 import jakarta.persistence.EntityManager;
@@ -14,6 +15,7 @@ public class EntityManagerProducer {
 	private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa-hibernate-mysql");
 	
 	@Produces
+	@RequestScoped
 	public EntityManager produceEntityManager() {
 		return emf.createEntityManager();
 	}

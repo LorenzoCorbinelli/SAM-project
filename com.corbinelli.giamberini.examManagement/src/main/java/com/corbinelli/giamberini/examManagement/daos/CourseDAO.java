@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.corbinelli.giamberini.examManagement.model.Course;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 
-@ApplicationScoped
+@RequestScoped
 public class CourseDAO extends BaseDAO<Course> {
 
 	@Override

@@ -8,10 +8,10 @@ import com.corbinelli.giamberini.examManagement.daos.ExamDAO;
 import com.corbinelli.giamberini.examManagement.model.Course;
 import com.corbinelli.giamberini.examManagement.model.Exam;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
-@ApplicationScoped
+@RequestScoped
 public class ExamService {
 	
 	@Inject
