@@ -52,7 +52,7 @@ public class EnrollmentResource {
 				.entity(enrollmentsByStudent)
 				.build();
 	}
-	//get by exam
+	
 	@GET
 	@Path("/exam/{id}")
 	public Response getEnrollmentOfExam(@PathParam("id") Long examID) {
@@ -81,7 +81,6 @@ public class EnrollmentResource {
 	
 	@POST
 	public Response newEnrollment(Enrollment enrollment) {
-		System.out.println(enrollment);
 		try {
 			enrollmentService.enroll(enrollment);
 			return Response.status(Response.Status.CREATED)
@@ -106,7 +105,5 @@ public class EnrollmentResource {
 				.entity(disenroll)
 				.build();
 	}
-	//delete disenroll
-	
 
 }

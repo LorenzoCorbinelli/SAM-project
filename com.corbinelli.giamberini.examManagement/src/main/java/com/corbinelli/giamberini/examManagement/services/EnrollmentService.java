@@ -30,14 +30,12 @@ public class EnrollmentService {
 	public void enroll(Enrollment enrollment) {
 		Long studentID = enrollment.getStudent().getId();
 		Student existingStudent = studentDAO.findById(studentID);
-		System.out.println(existingStudent);
 		if (existingStudent == null) {
 			throw new IllegalArgumentException("Student not found with ID: " + studentID);
 		}
 		
 		Long examID = enrollment.getExam().getId();
 		Exam existingExam = examDAO.findById(examID);
-		System.out.println(existingExam);
 		if (existingExam == null) {
 			throw new IllegalArgumentException("Exam not found with ID: " + examID);
 		}
@@ -58,17 +56,6 @@ public class EnrollmentService {
 	public List<Exam> getExamsByStudent(Long studentID){
 		return enrollmentDAO.findExamsByStudent(studentID);
 	}
-	
-	/*
-	 * public List<Exam> getExamsByStudent(Student student){
-		Long studentID = student.getId();
-		Student existingStudent = studentDAO.findById(studentID);
-		if (existingStudent == null) {
-			throw new IllegalArgumentException("Student not found with ID: " + studentID);
-		}
-		return enrollmentDAO.findExamsByStudent(existingStudent);
-	}
-	 */
 	
 	public List<Student> getStudentsEnrolledForAnExam(Long examID){
 		return enrollmentDAO.findStudentsByExam(examID);
