@@ -2,7 +2,6 @@ package com.corbinelli.giamberini.examManagement.daos;
 
 import java.util.List;
 
-import com.corbinelli.giamberini.examManagement.model.Course;
 import com.corbinelli.giamberini.examManagement.model.Enrollment;
 import com.corbinelli.giamberini.examManagement.model.Exam;
 import com.corbinelli.giamberini.examManagement.model.Student;
@@ -40,22 +39,22 @@ public class EnrollmentDAO extends BaseDAO<Enrollment> {
 		return enrollment;
 	}
 	
-	public List<Exam> findExamsByStudent(Student student){
-		return entityManager.createQuery("SELECT e.exam FROM Enrollment e WHERE e.student = :student",Exam.class)
-				.setParameter("student", student)
+	public List<Exam> findExamsByStudent(Long studentID){
+		return entityManager.createQuery("SELECT e.exam FROM Enrollment e WHERE e.student.id = :studentID",Exam.class)
+				.setParameter("studentID", studentID)
 				.getResultList();
 	}
 	
-	public List<Student> findStudentsByExam(Exam exam){
-		return entityManager.createQuery("SELECT e.student FROM Enrollment e WHERE e.exam = :exam", Student.class)
-				.setParameter("exam", exam)
+	public List<Student> findStudentsByExam(Long examID){
+		return entityManager.createQuery("SELECT e.student FROM Enrollment e WHERE e.exam.id = :examID", Student.class)
+				.setParameter("examID", examID)
 				.getResultList();
 	}
 	
-	public List<Exam> findExamsEnrollmentsByStudentAndCourse(Student student, Course course) {
-		return entityManager.createQuery("SELECT e.exam FROM Enrollment e WHERE e.student = :student AND e.exam.course = :course", Exam.class)
-				.setParameter("student", student)
-				.setParameter("course", course)
+	public List<Exam> findExamsEnrollmentsByStudentAndCourse(Long studentID, Long courseID) {
+		return entityManager.createQuery("SELECT e.exam FROM Enrollment e WHERE e.student.id = :studentID AND e.exam.course.id = :courseID", Exam.class)
+				.setParameter("studentID", studentID)
+				.setParameter("courseID", courseID)
 				.getResultList();
 	}
 

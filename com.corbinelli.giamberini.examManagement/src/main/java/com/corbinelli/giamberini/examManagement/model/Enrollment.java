@@ -28,7 +28,7 @@ public class Enrollment {
 		this.exam = exam;
 	}
 	
-	void setId(Long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
