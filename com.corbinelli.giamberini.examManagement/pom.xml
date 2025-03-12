@@ -86,20 +86,6 @@
 
   <build>
     <plugins>
-		<!-- TODO: se usiamo jar probabilmente sara' da rimuovere e anche directory WEB-INF-->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>3.4.0</version>
-        <configuration>
-          <failOnMissingWebXml>false</failOnMissingWebXml>
-          <archive>
-            <manifest>
-              <mainClass>com.corbinelli.giamberini.examManagement.RestServer</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
