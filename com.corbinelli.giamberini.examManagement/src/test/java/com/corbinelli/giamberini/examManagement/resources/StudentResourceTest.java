@@ -2,93 +2,111 @@ package com.corbinelli.giamberini.examManagement.resources;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.concurrent.TimeUnit;
 
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.JerseyClientBuilder;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.corbinelli.giamberini.examManagement.RestServer;
 import com.corbinelli.giamberini.examManagement.model.Student;
 
+import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.Entity;
-import jakarta.ws.rs.core.Application;
+import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-public class StudentResourceTest extends JerseyTest {
+public class StudentResourceTest {
 	
-	private static Connection connection;
-	
-	@Override
-	protected Application configure() {
-		return new ResourceConfig(StudentResource.class);
-	}
+	private static Client client;
+	private static WebTarget target;
+	private static final String PATH_TO_DOCKER_COMPOSE = "src/test/resources/docker-compose.yml";
 	
 	@BeforeClass
-	public static void setup() {
+	public static void initialize() {
+		ProcessBuilder pbUp = new ProcessBuilder("docker-compose", "-f", PATH_TO_DOCKER_COMPOSE, "up", "-d");
+		pbUp.inheritIO();
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/examManagementDB", 
-					"user",
-					"user");
-		} catch (SQLException e) {
+			pbUp.start().waitFor();
+		} catch (InterruptedException | IOException e) {
 			e.printStackTrace();
-		} 
+		}
+		waitForDatabase();
+		
+		RestServer.main(null);
+		ClientConfig clientConfig = new ClientConfig();
+		client = JerseyClientBuilder.createClient(clientConfig);
+		target = client.target("http://localhost:8080/");
+	}
+	
+	private static void waitForDatabase() {
+		int retries = 10; // Maximum retries before failing
+		while (retries > 0) {
+			try (Connection connection = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/examManagementDB", 
+					"user", 
+					"user")) {
+				return;
+			} catch (SQLException e) {
+				retries--;
+				try {
+					TimeUnit.SECONDS.sleep(1);
+				} catch (InterruptedException ie) {
+					Thread.currentThread().interrupt();
+					throw new RuntimeException("Database wait interrupted", ie);
+				}
+			}
+		}
+		throw new IllegalStateException("Could not connect to the database after multiple attempts.");
+	}
+	
+	@AfterClass
+	public static void teardown() {
+		RestServer.shutDown();
+		ProcessBuilder pbDown = new ProcessBuilder("docker-compose", "-f", PATH_TO_DOCKER_COMPOSE, "down");
+		pbDown.inheritIO();
+		try {
+			pbDown.start().waitFor();
+		} catch (InterruptedException | IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
-	public void testNewStudent() {
+	public void testStudentResource() {
+		// POST
 		Student student = new Student("Mario", "Rossi", "mario.rossi@example.com");
-		Response post = target("/students")
+		Response response = target.path("/students")
 				.request()
 				.post(Entity.entity(student, MediaType.APPLICATION_JSON));
 		
-		assertEquals(201, post.getStatus());
+		assertEquals(201, response.getStatus());
 		
-		try {
-			Statement statement = connection.createStatement();
-			statement.execute("SET FOREIGN_KEY_CHECKS = 0");
-			statement.executeUpdate("TRUNCATE TABLE students");
-			statement.execute("SET FOREIGN_KEY_CHECKS = 1");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@Test
-	public void testGetStudent() {
-		insertStudent(new Student("Mario", "Rossi", "mario.rossi@example.com"));
-		Student student2 = new Student("Luigi", "Verdi", "luigi.verdi@example.com");
-		insertStudent(student2);
+		// GET
+		response = target.path("/students/1").request().get();
 		
-		Response response = target("/students/2").request().get();
 		assertEquals(200, response.getStatus());
-		Entity<Student> entity = Entity.entity(student2, MediaType.APPLICATION_JSON);
-		assertEquals(entity, response.getEntity());
+		Student entity = response.readEntity(Student.class);
+		assertEquals(student.getName(), entity.getName());
+		assertEquals(student.getSurname(), entity.getSurname());
+		assertEquals(student.getEmail(), entity.getEmail());
+		
+		// DELETE
+		response = target.path("/students/1").request().delete();
+		
+		assertEquals(200, response.getStatus());
+		response = target.path("/students/1").request().delete();
+		assertEquals(404, response.getStatus());
+		
+		response = target.path("/students/1").request().get();
+		assertEquals(404, response.getStatus());
 	}
 	
-	private void insertStudent(Student student) {
-		String query = "INSERT INTO students (name, surname, email) VALUES (?, ?, ?)";
-		
-		try {
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setString(1, student.getName());
-			statement.setString(2, student.getSurname());
-			statement.setString(3, student.getEmail());
-			int result = statement.executeUpdate();
-			
-			if (result > 0) {
-				System.out.println("Student inserted successfully.");
-			} else {
-				System.out.println("Failed to insert student.");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
 }

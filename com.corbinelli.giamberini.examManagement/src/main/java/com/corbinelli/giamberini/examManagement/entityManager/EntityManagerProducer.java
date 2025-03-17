@@ -13,23 +13,23 @@ import jakarta.persistence.Persistence;
 public class EntityManagerProducer {
 	
 	private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa-hibernate-mysql");
-	
+
 	@Produces
 	@RequestScoped
 	public EntityManager produceEntityManager() {
 		return emf.createEntityManager();
 	}
-	
+
 	public void closeEntityManager(@Disposes EntityManager em) {
 		if (em.isOpen()) {
-			em.close();  // Closes EntityManager after each request
+			em.close(); // Closes EntityManager after each request
 		}
 	}
 
 	@PreDestroy
 	public void closeEntityManagerFactory() {
 		if (emf.isOpen()) {
-			emf.close();  // Closes EntityManagerFactory when the app shuts down
+			emf.close(); // Closes EntityManagerFactory when the app shuts down
 		}
 	}
 }
