@@ -12,11 +12,14 @@ import jakarta.persistence.Persistence;
 @ApplicationScoped
 public class EntityManagerProducer {
 	
-	private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa-hibernate-mysql");
+	private static EntityManagerFactory emf;
 
 	@Produces
 	@RequestScoped
 	public EntityManager produceEntityManager() {
+		if(emf == null || !emf.isOpen()) {
+			 emf = Persistence.createEntityManagerFactory("jpa-hibernate-mysql");
+		}
 		return emf.createEntityManager();
 	}
 

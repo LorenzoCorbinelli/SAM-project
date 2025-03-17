@@ -15,7 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.corbinelli.giamberini.examManagement.RestServer;
-import com.corbinelli.giamberini.examManagement.model.Student;
+import com.corbinelli.giamberini.examManagement.model.Teacher;
 
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.Entity;
@@ -23,7 +23,7 @@ import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-public class StudentResourceTest {
+public class TeacherResourceTest {
 	
 	private static Client client;
 	private static WebTarget target;
@@ -78,39 +78,37 @@ public class StudentResourceTest {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
-	public void testStudentResource() {
+	public void testTeacherResource() {
 		// POST
-		Student student = new Student("Mario", "Rossi", "mario.rossi@example.com");
-		Response response = target.path("/students")
-				.request()
-				.post(Entity.entity(student, MediaType.APPLICATION_JSON));
+		Teacher teacher = new Teacher("Mario", "Rossi", "mario.rossi@example.com");
+		Response response = target.path("/teachers")
+			.request()
+			.post(Entity.entity(teacher, MediaType.APPLICATION_JSON));
 		
 		assertEquals(201, response.getStatus());
 		
-		Student entity = response.readEntity(Student.class);
-		Long studentId = entity.getId();
-		
+		Teacher entity = response.readEntity(Teacher.class);
+		Long teacherId = entity.getId();
 		// GET
-		response = target.path("/students/" + studentId).request().get();
-		
+		response = target.path("/teachers/" + teacherId).request().get();
 		assertEquals(200, response.getStatus());
-		assertEquals(student.getName(), entity.getName());
-		assertEquals(student.getSurname(), entity.getSurname());
-		assertEquals(student.getEmail(), entity.getEmail());
+		assertEquals(teacher.getName(), entity.getName());
+		assertEquals(teacher.getSurname(), entity.getSurname());
+		assertEquals(teacher.getEmail(), entity.getEmail());
 		
 		// DELETE
-		response = target.path("/students/" + studentId).request().delete();
+		response = target.path("/teachers/" + teacherId).request().delete();
 		assertEquals(200, response.getStatus());
 		
 		// DELETE: NOT FOUND
-		response = target.path("/students/" + studentId).request().delete();
+		response = target.path("/teachers/" + teacherId).request().delete();
 		assertEquals(404, response.getStatus());
 		
 		// GET: NOT FOUND
-		response = target.path("/students/" + studentId).request().get();
+		response = target.path("/teachers/" + teacherId).request().get();
 		assertEquals(404, response.getStatus());
 	}
-	
+
 }

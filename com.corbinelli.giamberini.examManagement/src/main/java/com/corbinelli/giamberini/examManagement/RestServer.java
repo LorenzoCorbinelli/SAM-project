@@ -26,6 +26,6 @@ public class RestServer {
 	}
 
 	public static void shutDown() {
-		httpServer.shutdown();
+		httpServer.shutdownNow();
 	}
 }
