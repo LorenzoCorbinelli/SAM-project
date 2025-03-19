@@ -89,9 +89,25 @@ public class EnrollmentResourceTest {
 	
 	@Test
 	public void testEnrollmentResource() {
+		// POST: BAD REQUEST STUDENT NOT FOUND
+		Enrollment enrollment = new Enrollment(new Student("a", "b", "c"), null);
+		Response response = target.path("/enrollments").request()
+				.post(Entity.entity(enrollment, MediaType.APPLICATION_JSON));
+		assertEquals(400, response.getStatus());
+		
+		// POST: BAD REQUEST EXAM NOT FOUND
+		Student student = new Student("Sara", "Bianchi", "sara.bianchi@example.com");
+		response = target.path("/students").request()
+				.post(Entity.entity(student, MediaType.APPLICATION_JSON));
+		student.setId(response.readEntity(Student.class).getId());
+		enrollment = new Enrollment(student, new Exam(null, null));
+		response = target.path("/enrollments").request()
+				.post(Entity.entity(enrollment, MediaType.APPLICATION_JSON));
+		assertEquals(400, response.getStatus());
+		
 		// POST new enrollment
 		Student student1 = new Student("Luigi", "Verdi", "luigi.verdi@example.com");
-		Response response = target.path("/students").request()
+		response = target.path("/students").request()
 				.post(Entity.entity(student1, MediaType.APPLICATION_JSON));
 		student1.setId(response.readEntity(Student.class).getId());
 
