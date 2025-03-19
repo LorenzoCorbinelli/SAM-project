@@ -27,14 +27,10 @@ public class CourseDAO extends BaseDAO<Course> {
 	}
 
 	@Override
-	public Course delete(Long id) {
+	public void delete(Course course) {
 		entityManager.getTransaction().begin();
-		Course course = entityManager.find(Course.class, id);
-		if(course != null) {
-			entityManager.remove(course);
-		}
+		entityManager.remove(course);
 		entityManager.getTransaction().commit();
-		return course;
 	}
 	
 	public List<Course> findCoursesByTeacher(Long teacherID) {

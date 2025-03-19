@@ -9,6 +9,7 @@ import com.corbinelli.giamberini.examManagement.model.Teacher;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityNotFoundException;
 
 @RequestScoped
 public class CourseService {
@@ -38,7 +39,12 @@ public class CourseService {
 	}
 	
 	public Course removeCourse(Long id) {
-		return courseDAO.delete(id);
+		Course courseToRemove = courseDAO.findById(id);
+		if(courseToRemove == null) {
+			throw new EntityNotFoundException("Course not found with id: " + id);
+		}
+		courseDAO.delete(courseToRemove);
+		return courseToRemove;
 	}
 	
 	public Course getCourseInfoById(Long id) {
