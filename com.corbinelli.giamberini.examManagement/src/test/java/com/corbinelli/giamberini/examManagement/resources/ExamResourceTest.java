@@ -144,7 +144,24 @@ public class ExamResourceTest {
 		// GET exams on a specific date: NO CONTENT
 		response = target.path("/exams/date/2025-06-10").request().get();
 		assertEquals(204, response.getStatus());
+		
+		// GET exams in a period
+		response = target.path("/exams/period").queryParam("start", "2025-05-01").queryParam("end", "2025-06-30")
+				.request().get();
+		assertEquals(200, response.getStatus());
+		List<Exam> examsInPeriod = response.readEntity(new GenericType<List<Exam>>() {});
+		assertThat(examsInPeriod).containsExactlyInAnyOrder(exam, exam2);
 
+		// GET exams in a period: NO CONTENT
+		response = target.path("/exams/period").queryParam("start", "2024-01-01").queryParam("end", "2024-12-31")
+				.request().get();
+		assertEquals(204, response.getStatus());
+
+		// GET exams in a period: BAD REQUEST
+		response = target.path("/exams/period").queryParam("start", "2025-07-01").queryParam("end", "2025-06-01")
+				.request().get();
+		assertEquals(400, response.getStatus());
+		
 		// DELETE the exam
 		response = target.path("/exams/" + exam.getId()).request().delete();
 		assertEquals(200, response.getStatus());

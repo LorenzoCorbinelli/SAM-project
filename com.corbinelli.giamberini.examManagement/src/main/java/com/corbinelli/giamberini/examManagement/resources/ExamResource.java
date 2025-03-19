@@ -83,14 +83,21 @@ public class ExamResource {
 	@GET
 	@Path("/period")
 	public Response getExamsInAPeriod(@QueryParam("start") String startDate, @QueryParam("end") String endDate) {
-		List<Exam> examsInAPeriod = examService.getExamsInAPeriod(startDate, endDate);
-		if(examsInAPeriod.isEmpty()) {
-			return Response.status(Response.Status.NO_CONTENT)
-					.build();
-		}
-		return Response.status(Response.Status.OK)
-				.entity(examsInAPeriod)
-				.build();
+		try {
+	        List<Exam> examsInAPeriod = examService.getExamsInAPeriod(startDate, endDate);
+
+	        if (examsInAPeriod.isEmpty()) {
+	            return Response.status(Response.Status.NO_CONTENT).build();
+	        }
+
+	        return Response.status(Response.Status.OK)
+	                .entity(examsInAPeriod)
+	                .build();
+	    } catch (IllegalArgumentException e) {
+	        return Response.status(Response.Status.BAD_REQUEST)
+	                .entity("Invalid dates order")
+	                .build();
+	    }
 	}
 	
 	@POST
