@@ -45,7 +45,7 @@ public class EnrollmentResource {
 	public Response getEnrollmentOfStudent(@PathParam("id") Long studentID) {
 		List<Exam> enrollmentsByStudent = enrollmentService.getExamsByStudent(studentID);
 		if(enrollmentsByStudent.isEmpty()) {
-			return Response.status(Response.Status.NOT_FOUND)
+			return Response.status(Response.Status.NO_CONTENT)
 					.build();
 		}
 		return Response.status(Response.Status.OK)
@@ -57,8 +57,8 @@ public class EnrollmentResource {
 	@Path("/exam/{id}")
 	public Response getEnrollmentOfExam(@PathParam("id") Long examID) {
 		List<Student> studentsEnrolledForAnExam = enrollmentService.getStudentsEnrolledForAnExam(examID);
-		if (studentsEnrolledForAnExam == null) {
-			return Response.status(Response.Status.NOT_FOUND)
+		if (studentsEnrolledForAnExam.isEmpty()) {
+			return Response.status(Response.Status.NO_CONTENT)
 					.build();
 		}
 		return Response.status(Response.Status.OK)
