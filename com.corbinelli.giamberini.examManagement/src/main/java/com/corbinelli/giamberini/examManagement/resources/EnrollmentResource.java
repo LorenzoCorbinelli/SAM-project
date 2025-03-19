@@ -8,6 +8,7 @@ import com.corbinelli.giamberini.examManagement.model.Student;
 import com.corbinelli.giamberini.examManagement.services.EnrollmentService;
 
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -96,14 +97,16 @@ public class EnrollmentResource {
 	@DELETE
 	@Path("/{id}")
 	public Response removeEnrollment(@PathParam("id") Long id) {
-		Enrollment disenroll = enrollmentService.disenroll(id);
-		if (disenroll == null) {
+		try {
+			Enrollment disenroll = enrollmentService.disenroll(id);
+			return Response.status(Response.Status.OK)
+					.entity(disenroll)
+					.build();
+		} catch(EntityNotFoundException e) {
 			return Response.status(Response.Status.NOT_FOUND)
+					.entity(e.getMessage())
 					.build();
 		}
-		return Response.status(Response.Status.OK)
-				.entity(disenroll)
-				.build();
 	}
 
 }

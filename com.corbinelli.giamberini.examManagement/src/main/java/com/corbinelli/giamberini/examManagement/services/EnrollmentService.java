@@ -11,6 +11,7 @@ import com.corbinelli.giamberini.examManagement.model.Student;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityNotFoundException;
 
 @RequestScoped
 public class EnrollmentService {
@@ -46,7 +47,12 @@ public class EnrollmentService {
 	}
 	
 	public Enrollment disenroll(Long id) {
-		return enrollmentDAO.delete(id);
+		Enrollment enrollmentToRemove = enrollmentDAO.findById(id);
+		if(enrollmentToRemove == null) {
+			throw new EntityNotFoundException("Enrollment not found with id: " + id);
+		}
+		enrollmentDAO.delete(enrollmentToRemove);
+		return enrollmentToRemove;
 	}
 	
 	public Enrollment getEnrollmentInfoById(Long id) {
