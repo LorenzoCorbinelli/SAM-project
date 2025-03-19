@@ -90,6 +90,12 @@ public class ExamResourceTest {
 		// GET all exams: NO CONTENT
 		Response response = target.path("/exams/all").request().get();
 		assertEquals(204, response.getStatus());
+		
+		// POST: BAD REQUEST COURSE NOT FOUND
+		Course course = new Course("AST", "Automated Software Testing", null);
+		Exam exam = new Exam(course, LocalDate.of(2025, 5, 20));
+		response = target.path("/exams").request().post(Entity.entity(exam, MediaType.APPLICATION_JSON));
+		assertEquals(400, response.getStatus());
 
 		// POST
 		Teacher teacher = new Teacher("Neri", "Gigli", "neri.gigli@example.com");
@@ -98,12 +104,12 @@ public class ExamResourceTest {
 		teacher.setId(postTeacher.readEntity(Teacher.class).getId());
 
 		// POST: Create a new course
-		Course course = new Course("AST", "Automated Software Testing", teacher);
+		course = new Course("AST", "Automated Software Testing", teacher);
 		response = target.path("/courses").request().post(Entity.entity(course, MediaType.APPLICATION_JSON));
 		assertEquals(201, response.getStatus());
 		course.setId(response.readEntity(Course.class).getId());
 
-		Exam exam = new Exam(course, LocalDate.of(2025, 5, 20));
+		exam = new Exam(course, LocalDate.of(2025, 5, 20));
 		response = target.path("/exams").request().post(Entity.entity(exam, MediaType.APPLICATION_JSON));
 		assertEquals(201, response.getStatus());
 		exam.setId(response.readEntity(Exam.class).getId());
@@ -126,13 +132,18 @@ public class ExamResourceTest {
 
 		response = target.path("/exams/course/" + course.getId()).request().get();
 		assertEquals(200, response.getStatus());
-		List<LocalDate> examDates = response.readEntity(new GenericType<List<LocalDate>>() {
-		});
+		List<LocalDate> examDates = response.readEntity(new GenericType<List<LocalDate>>() {});
 		assertThat(examDates).containsExactlyInAnyOrder(exam.getDate(), exam2.getDate());
 
 		// GET exams for a course: NO CONTENT
 		response = target.path("/exams/course/999").request().get();
 		assertEquals(204, response.getStatus());
+		
+		// GET all exams
+		response = target.path("/exams/all").request().get();
+		List<Exam> allExams = response.readEntity(new GenericType<List<Exam>>() {});
+		assertEquals(200, response.getStatus());
+		assertThat(allExams).containsExactlyInAnyOrder(exam, exam2);
 
 		// GET exams on a specific date
 		response = target.path("/exams/date/2025-05-20").request().get();
