@@ -5,6 +5,7 @@ import com.corbinelli.giamberini.examManagement.model.Teacher;
 import com.corbinelli.giamberini.examManagement.services.TeacherService;
 
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -47,13 +48,15 @@ public class TeacherResource {
 	@DELETE
 	@Path("/{id}")
 	public Response removeTeacher(@PathParam("id") Long id) {
-		Teacher teacher = teacherService.deleteTeacher(id);
-		if (teacher == null) {
+		try {
+			Teacher teacher = teacherService.deleteTeacher(id);
+			return Response.status(Response.Status.OK)
+					.entity(teacher)
+					.build();
+		} catch(EntityNotFoundException e) {
 			return Response.status(Response.Status.NOT_FOUND)
+					.entity(e.getMessage())
 					.build();
 		}
-		return Response.status(Response.Status.OK)
-				.entity(teacher)
-				.build();
 	}
 }

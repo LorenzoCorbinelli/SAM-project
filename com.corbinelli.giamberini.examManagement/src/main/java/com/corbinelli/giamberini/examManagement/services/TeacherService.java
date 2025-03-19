@@ -7,6 +7,7 @@ import com.corbinelli.giamberini.examManagement.model.Teacher;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityNotFoundException;
 
 @RequestScoped
 public class TeacherService {
@@ -36,7 +37,12 @@ public class TeacherService {
 	}
 	
 	public Teacher deleteTeacher(Long id) {
-		return teacherDAO.delete(id);
+		Teacher teacherToRemove = teacherDAO.findById(id);
+		if(teacherToRemove == null) {
+			throw new EntityNotFoundException("Teacher not found with id: " + id);
+		}
+		teacherDAO.delete(teacherToRemove);
+		return teacherToRemove;
 	}
 	
 	public Teacher getTeacherInfoById(Long id) {
