@@ -27,14 +27,10 @@ public class StudentDAO extends BaseDAO<Student> {
 	}
 
 	@Override
-	public Student delete(Long id) {
+	public void delete(Student student) {
 		entityManager.getTransaction().begin();
-		Student student = entityManager.find(Student.class, id);
-		if(student != null) {
-			entityManager.remove(student);
-		}
+		entityManager.remove(student);
 		entityManager.getTransaction().commit();
-		return student;
 	}
 	
 	public List<Student> findByNameAndSurname(String name, String surname) {
