@@ -10,6 +10,7 @@ import com.corbinelli.giamberini.examManagement.model.Exam;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityNotFoundException;
 
 @RequestScoped
 public class ExamService {
@@ -45,7 +46,12 @@ public class ExamService {
 	}
 	
 	public Exam removeExam(Long id) {
-		return examDAO.delete(id);
+		Exam examToRemove = examDAO.findById(id);
+		if(examToRemove == null) {
+			throw new EntityNotFoundException("Exam not found with id: " + id);
+		}
+		examDAO.delete(examToRemove);
+		return examToRemove;
 	}
 	
 	public Exam getExamInfoById(Long id) {
