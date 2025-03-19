@@ -75,11 +75,19 @@ public class ExamService {
 	}
 	
 	public List<Exam> getExamsInAPeriod(LocalDate startDate, LocalDate endDate) {
+		if (startDate.isAfter(endDate)) {
+	        throw new IllegalArgumentException("Start date cannot be after end date");
+	    }
 		return examDAO.findExamsInAPeriod(startDate, endDate);
 	}
 	
 	public List<Exam> getExamsInAPeriod(String startDate, String endDate) {
-		return examDAO.findExamsInAPeriod(LocalDate.parse(startDate), LocalDate.parse(endDate));
+		LocalDate start = LocalDate.parse(startDate);
+	    LocalDate end = LocalDate.parse(endDate);
+	    if (start.isAfter(end)) {
+	        throw new IllegalArgumentException("Start date cannot be after end date");
+	    }
+	    return examDAO.findExamsInAPeriod(start, end);
 	}
 
 }
