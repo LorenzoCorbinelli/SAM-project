@@ -172,7 +172,7 @@ public class EnrollmentResourceTest {
 
 	    // GET enrollment by student ID: NOT FOUND
 	    response = target.path("/enrollments/student/999").request().get();
-	    assertEquals(404,response.getStatus());
+	    assertEquals(204,response.getStatus());
 	    
 	    // GET enrollment by exam ID
 	    Enrollment enrollment3 = new Enrollment(student2, exam1);
@@ -190,7 +190,7 @@ public class EnrollmentResourceTest {
 	    response = target.path("/enrollments/exam/111").request().get();
 	    students = response.readEntity(new GenericType<List<Student>>() {});
 	    System.out.println(students);
-	    assertEquals(404,response.getStatus());
+	    assertEquals(204,response.getStatus());
 	    
 	    // GET exam trials
 	    response = target.path("/enrollments/trials").queryParam("student", student1.getId())
