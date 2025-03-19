@@ -89,6 +89,13 @@ public class CourseResourceTest {
 		Response response = target.path("/courses/all").request().get();
 		assertEquals(204,response.getStatus());
 		
+		// POST: BAD REQUEST TEACHER NOT FOUND
+		Course course = new Course("AST","Automated Software Testing", new Teacher("", "", ""));
+		response = target.path("/courses")
+				.request()
+				.post(Entity.entity(course, MediaType.APPLICATION_JSON));
+		assertEquals(400, response.getStatus());
+		
 		//POST
 		Teacher teacher = new Teacher("Neri","Gigli","neri.gigli@example.com");
 		Response postTeacher = target.path("/teachers")
@@ -96,7 +103,7 @@ public class CourseResourceTest {
 			.post(Entity.entity(teacher, MediaType.APPLICATION_JSON));
 		teacher.setId(postTeacher.readEntity(Teacher.class).getId());
 		
-		Course course = new Course("AST","Automated Software Testing",teacher);
+		course = new Course("AST","Automated Software Testing",teacher);
 		response = target.path("/courses")
 				.request()
 				.post(Entity.entity(course, MediaType.APPLICATION_JSON));
@@ -142,6 +149,15 @@ public class CourseResourceTest {
 		response = target.path("/courses/all").request().get();
 		listRetrivedCourse = response.readEntity(new GenericType<List<Course>>() {});
 		assertThat(listRetrivedCourse).containsExactlyInAnyOrder(course2, course);
+		
+		// GET by teacher: NO CONTENT
+		response = target.path("/courses/teacher/99").request().get();
+		assertEquals(204, response.getStatus());
+		
+		// GET by teacher
+		response = target.path("/courses/teacher/" + teacher.getId()).request().get();
+		listRetrivedCourse = response.readEntity(new GenericType<List<Course>>() {});
+		assertThat(listRetrivedCourse).containsExactlyInAnyOrder(course, course2);
 				
 		//DELETE
 		response = target.path("/courses/"+courseId).request().delete();
