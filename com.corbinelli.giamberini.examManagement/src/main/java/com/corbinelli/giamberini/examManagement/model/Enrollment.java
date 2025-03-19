@@ -54,7 +54,7 @@ public class Enrollment {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(exam, student);
+		return (id != null) ? Objects.hash(id) : System.identityHashCode(this);
 	}
 
 	@Override
@@ -66,7 +66,10 @@ public class Enrollment {
 		if (getClass() != obj.getClass())
 			return false;
 		Enrollment other = (Enrollment) obj;
-		return Objects.equals(exam, other.exam) && Objects.equals(student, other.student);
+		if (this.id == null || other.id == null) {
+			return super.equals(obj);
+		}
+		return Objects.equals(id, other.id);
 	}
 
 	@Override

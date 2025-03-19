@@ -54,7 +54,7 @@ public class Exam {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(course, date, id);
+		return (id != null) ? Objects.hash(id) : System.identityHashCode(this);
 	}
 
 	@Override
@@ -66,7 +66,10 @@ public class Exam {
 		if (getClass() != obj.getClass())
 			return false;
 		Exam other = (Exam) obj;
-		return Objects.equals(course, other.course) && Objects.equals(date, other.date) && Objects.equals(id, other.id);
+		if (this.id == null || other.id == null) {
+			return super.equals(obj);
+		}
+		return Objects.equals(id, other.id);
 	}
 
 	@Override
