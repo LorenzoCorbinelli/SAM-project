@@ -90,126 +90,112 @@ public class EnrollmentResourceTest {
 	@Test
 	public void testEnrollmentResource() {
 		// POST new enrollment
-	    Student student1 = new Student("Luigi", "Verdi", "luigi.verdi@example.com");
-	    Response response = target.path("/students")
-	    		.request()
-	            .post(Entity.entity(student1, MediaType.APPLICATION_JSON));
-	    student1.setId(response.readEntity(Student.class).getId());
-	    
-	    Student student2 = new Student("Mario", "Rossi", "mario.rossi@example.com");
-	    response = target.path("/students")
-	    		.request()
-	            .post(Entity.entity(student2, MediaType.APPLICATION_JSON));
-	    student2.setId(response.readEntity(Student.class).getId());
-	    
-	    Teacher teacher = new Teacher("Neri", "Gigli", "neri.gigli@example.com");
-	    response = target.path("/teachers")
-	        .request()
-	        .post(Entity.entity(teacher, MediaType.APPLICATION_JSON));
-	    teacher.setId(response.readEntity(Teacher.class).getId());
-	    
-	    Course course1 = new Course("AST", "Automated Software Testing", teacher);
-	    response = target.path("/courses")
-	        .request()
-	        .post(Entity.entity(course1, MediaType.APPLICATION_JSON));
-	    course1.setId(response.readEntity(Course.class).getId());
-	    
-	    Course course2 = new Course("RRTC", "Resiliency Real-Time and Certification", teacher);
-	    response = target.path("/courses")
-	        .request()
-	        .post(Entity.entity(course2, MediaType.APPLICATION_JSON));
-	    course2.setId(response.readEntity(Course.class).getId());
-	    
-	    Exam exam1 = new Exam(course1, LocalDate.of(2025, 5, 20));
-	    response = target.path("/exams")
-	        .request()
-	        .post(Entity.entity(exam1, MediaType.APPLICATION_JSON));;
-	    exam1.setId(response.readEntity(Exam.class).getId());
-	    
-	    Exam exam2 = new Exam(course2, LocalDate.of(2025, 5, 20));
-	    response = target.path("/exams")
-	        .request()
-	        .post(Entity.entity(exam2, MediaType.APPLICATION_JSON));;
-	    exam2.setId(response.readEntity(Exam.class).getId());
-	    
-	    Exam exam3 = new Exam(course2, LocalDate.of(2025, 6, 15));
-	    response = target.path("/exams")
-	        .request()
-	        .post(Entity.entity(exam3, MediaType.APPLICATION_JSON));;
-	        exam3.setId(response.readEntity(Exam.class).getId());
-	    
-	    Enrollment enrollment1 = new Enrollment(student1, exam1);
-	    response = target.path("/enrollments")
-	    		.request()
-	            .post(Entity.entity(enrollment1, MediaType.APPLICATION_JSON));
-	    assertEquals(201, response.getStatus());
-	    
-	    Long enrollmentId = response.readEntity(Enrollment.class).getId();
-	    enrollment1.setId(enrollmentId);
-	    
-	    // GET enrollment by ID
-	    response = target.path("/enrollments/id/" + enrollmentId).request().get();
-	    Enrollment retrievedEnrollment = response.readEntity(Enrollment.class);
-	    assertEquals(200, response.getStatus());
-	    assertEquals(enrollment1.getStudent(), retrievedEnrollment.getStudent());
-	    assertEquals(enrollment1.getExam(), retrievedEnrollment.getExam());
-	    
-	    // GET enrollment by ID - NOT FOUND
-	    response = target.path("/enrollments/id/999").request().get();
-	    assertEquals(404, response.getStatus());
-	    
-	    // GET enrollment by student ID
-	    Enrollment enrollment2 = new Enrollment(student1, exam3);
-	    response = target.path("/enrollments")
-	    		.request()
-	            .post(Entity.entity(enrollment2, MediaType.APPLICATION_JSON));
-	    enrollment2.setId(response.readEntity(Enrollment.class).getId());
-	    
-	    response = target.path("/enrollments/student/" + student1.getId()).request().get();
-	    List<Exam> exams = response.readEntity(new GenericType<List<Exam>>() {});
-	    assertEquals(200, response.getStatus());
-	    assertThat(exams).containsExactly(enrollment1.getExam(), enrollment2.getExam());
+		Student student1 = new Student("Luigi", "Verdi", "luigi.verdi@example.com");
+		Response response = target.path("/students").request()
+				.post(Entity.entity(student1, MediaType.APPLICATION_JSON));
+		student1.setId(response.readEntity(Student.class).getId());
 
-	    // GET enrollment by student ID: NOT FOUND
-	    response = target.path("/enrollments/student/999").request().get();
-	    assertEquals(204,response.getStatus());
-	    
-	    // GET enrollment by exam ID
-	    Enrollment enrollment3 = new Enrollment(student2, exam1);
-	    response = target.path("/enrollments")
-	    		.request()
-	            .post(Entity.entity(enrollment3, MediaType.APPLICATION_JSON));
-	    enrollment3.setId(response.readEntity(Enrollment.class).getId());
-	    
-	    response = target.path("/enrollments/exam/" + exam1.getId()).request().get();
-	    List<Student> students = response.readEntity(new GenericType<List<Student>>() {});
-	    assertEquals(200, response.getStatus());
-	    assertThat(students).containsExactly(enrollment1.getStudent(),enrollment3.getStudent());
+		Student student2 = new Student("Mario", "Rossi", "mario.rossi@example.com");
+		response = target.path("/students").request().post(Entity.entity(student2, MediaType.APPLICATION_JSON));
+		student2.setId(response.readEntity(Student.class).getId());
 
-	    // GET enrollment by exam ID: NOT FOUND
-	    response = target.path("/enrollments/exam/111").request().get();
-	    students = response.readEntity(new GenericType<List<Student>>() {});
-	    System.out.println(students);
-	    assertEquals(204,response.getStatus());
-	    
-	    // GET exam trials
-	    response = target.path("/enrollments/trials").queryParam("student", student1.getId())
-	            .queryParam("course", course1.getId()).request().get();
-	    List<Exam> trialsForStudent1Course1 = response.readEntity(new GenericType<List<Exam>>() {});
-	    assertThat(trialsForStudent1Course1).containsExactly(exam1);
-	    
-	    // GET exam trials: NO CONTENT
-	    response = target.path("/enrollments/trials").queryParam("student", "999")
-	            .queryParam("course", "000").request().get();
-	    assertEquals(204,response.getStatus());
-	    
-	    // DELETE enrollment
-	    response = target.path("/enrollments/" + enrollmentId).request().delete();
-	    assertEquals(200, response.getStatus());
+		Teacher teacher = new Teacher("Neri", "Gigli", "neri.gigli@example.com");
+		response = target.path("/teachers").request().post(Entity.entity(teacher, MediaType.APPLICATION_JSON));
+		teacher.setId(response.readEntity(Teacher.class).getId());
 
-	    // DELETE enrollment: NOT FOUND
-	    response = target.path("/enrollments/" + enrollmentId).request().delete();
-	    assertEquals(404, response.getStatus());
+		Course course1 = new Course("AST", "Automated Software Testing", teacher);
+		response = target.path("/courses").request().post(Entity.entity(course1, MediaType.APPLICATION_JSON));
+		course1.setId(response.readEntity(Course.class).getId());
+
+		Course course2 = new Course("RRTC", "Resiliency Real-Time and Certification", teacher);
+		response = target.path("/courses").request().post(Entity.entity(course2, MediaType.APPLICATION_JSON));
+		course2.setId(response.readEntity(Course.class).getId());
+
+		Exam exam1 = new Exam(course1, LocalDate.of(2025, 5, 20));
+		response = target.path("/exams").request().post(Entity.entity(exam1, MediaType.APPLICATION_JSON));
+		
+		exam1.setId(response.readEntity(Exam.class).getId());
+
+		Exam exam2 = new Exam(course2, LocalDate.of(2025, 5, 20));
+		response = target.path("/exams").request().post(Entity.entity(exam2, MediaType.APPLICATION_JSON));
+		
+		exam2.setId(response.readEntity(Exam.class).getId());
+
+		Exam exam3 = new Exam(course2, LocalDate.of(2025, 6, 15));
+		response = target.path("/exams").request().post(Entity.entity(exam3, MediaType.APPLICATION_JSON));
+		
+		exam3.setId(response.readEntity(Exam.class).getId());
+
+		Enrollment enrollment1 = new Enrollment(student1, exam1);
+		response = target.path("/enrollments").request().post(Entity.entity(enrollment1, MediaType.APPLICATION_JSON));
+		assertEquals(201, response.getStatus());
+
+		Long enrollmentId = response.readEntity(Enrollment.class).getId();
+		enrollment1.setId(enrollmentId);
+
+		// GET enrollment by ID
+		response = target.path("/enrollments/id/" + enrollmentId).request().get();
+		Enrollment retrievedEnrollment = response.readEntity(Enrollment.class);
+		assertEquals(200, response.getStatus());
+		assertEquals(enrollment1.getStudent(), retrievedEnrollment.getStudent());
+		assertEquals(enrollment1.getExam(), retrievedEnrollment.getExam());
+
+		// GET enrollment by ID - NOT FOUND
+		response = target.path("/enrollments/id/999").request().get();
+		assertEquals(404, response.getStatus());
+
+		// GET enrollment by student ID
+		Enrollment enrollment2 = new Enrollment(student1, exam3);
+		response = target.path("/enrollments").request().post(Entity.entity(enrollment2, MediaType.APPLICATION_JSON));
+		enrollment2.setId(response.readEntity(Enrollment.class).getId());
+
+		response = target.path("/enrollments/student/" + student1.getId()).request().get();
+		List<Exam> exams = response.readEntity(new GenericType<List<Exam>>() {
+		});
+		assertEquals(200, response.getStatus());
+		assertThat(exams).containsExactly(enrollment1.getExam(), enrollment2.getExam());
+
+		// GET enrollment by student ID: NOT FOUND
+		response = target.path("/enrollments/student/999").request().get();
+		assertEquals(204, response.getStatus());
+
+		// GET enrollment by exam ID
+		Enrollment enrollment3 = new Enrollment(student2, exam1);
+		response = target.path("/enrollments").request().post(Entity.entity(enrollment3, MediaType.APPLICATION_JSON));
+		enrollment3.setId(response.readEntity(Enrollment.class).getId());
+
+		response = target.path("/enrollments/exam/" + exam1.getId()).request().get();
+		List<Student> students = response.readEntity(new GenericType<List<Student>>() {
+		});
+		assertEquals(200, response.getStatus());
+		assertThat(students).containsExactly(enrollment1.getStudent(), enrollment3.getStudent());
+
+		// GET enrollment by exam ID: NOT FOUND
+		response = target.path("/enrollments/exam/111").request().get();
+		students = response.readEntity(new GenericType<List<Student>>() {
+		});
+		System.out.println(students);
+		assertEquals(204, response.getStatus());
+
+		// GET exam trials
+		response = target.path("/enrollments/trials").queryParam("student", student1.getId())
+				.queryParam("course", course1.getId()).request().get();
+		List<Exam> trialsForStudent1Course1 = response.readEntity(new GenericType<List<Exam>>() {
+		});
+		assertThat(trialsForStudent1Course1).containsExactly(exam1);
+
+		// GET exam trials: NO CONTENT
+		response = target.path("/enrollments/trials").queryParam("student", "999").queryParam("course", "000").request()
+				.get();
+		assertEquals(204, response.getStatus());
+
+		// DELETE enrollment
+		response = target.path("/enrollments/" + enrollmentId).request().delete();
+		assertEquals(200, response.getStatus());
+
+		// DELETE enrollment: NOT FOUND
+		response = target.path("/enrollments/" + enrollmentId).request().delete();
+		assertEquals(404, response.getStatus());
 	}
 
 

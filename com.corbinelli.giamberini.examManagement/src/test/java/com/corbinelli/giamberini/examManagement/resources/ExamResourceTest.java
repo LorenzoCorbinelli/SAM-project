@@ -87,76 +87,71 @@ public class ExamResourceTest {
 	
 	@Test
 	public void testExamResource() {
-	    // GET all exams: NO CONTENT
-	    Response response = target.path("/exams/all").request().get();
-	    assertEquals(204, response.getStatus());
-	    
-	    // POST 
-	    Teacher teacher = new Teacher("Neri", "Gigli", "neri.gigli@example.com");
-	    Response postTeacher = target.path("/teachers")
-	        .request()
-	        .post(Entity.entity(teacher, MediaType.APPLICATION_JSON));
-	    teacher.setId(postTeacher.readEntity(Teacher.class).getId());
-	    
-	    // POST: Create a new course
-	    Course course = new Course("AST", "Automated Software Testing", teacher);
-	    response = target.path("/courses")
-	        .request()
-	        .post(Entity.entity(course, MediaType.APPLICATION_JSON));
-	    assertEquals(201, response.getStatus());
-	    course.setId(response.readEntity(Course.class).getId());
-	    
-	    Exam exam = new Exam(course, LocalDate.of(2025, 5, 20));
-	    response = target.path("/exams")
-	        .request()
-	        .post(Entity.entity(exam, MediaType.APPLICATION_JSON));
-	    assertEquals(201, response.getStatus());
-	    exam.setId(response.readEntity(Exam.class).getId());
-	    
-	    // GET exam by ID
-	    response = target.path("/exams/id/" + exam.getId()).request().get();
-	    assertEquals(200, response.getStatus());
-	    Exam retrievedExam = response.readEntity(Exam.class);
-	    assertEquals(exam.getDate(), retrievedExam.getDate());
-	    assertEquals(exam.getCourse().getId(), retrievedExam.getCourse().getId());
-	    
-	    // GET by ID: NOT FOUND
-	    response = target.path("/exams/id/2").request().get();
-	    assertEquals(404, response.getStatus());
-	    
-	    // GET exams for a course
-	    Exam exam2 = new Exam(course, LocalDate.of(2025, 6, 15));
-	    response = target.path("/exams")
-	        .request()
-	        .post(Entity.entity(exam2, MediaType.APPLICATION_JSON));
-	    exam2.setId(response.readEntity(Exam.class).getId());
-	    
-	    response = target.path("/exams/course/" + course.getId()).request().get();
-	    assertEquals(200, response.getStatus());
-	    List<LocalDate> examDates = response.readEntity(new GenericType<List<LocalDate>>() {});
-	    assertThat(examDates).containsExactlyInAnyOrder(exam.getDate(),exam2.getDate());
-	    
-	    //GET exams for a course: NO CONTENT
-	    response = target.path("/exams/course/999").request().get();
-	    assertEquals(204, response.getStatus());
-	    
-	    // GET exams on a specific date
-	    response = target.path("/exams/date/2025-05-20").request().get();
-	    assertEquals(200, response.getStatus());
-	    List<Course> coursesOnDate = response.readEntity(new GenericType<List<Course>>() {});
-	    assertThat(coursesOnDate).containsExactly(course);
-	    
-	    // GET exams on a specific date: NO CONTENT
-	    response = target.path("/exams/date/2025-06-10").request().get();
-	    assertEquals(204, response.getStatus());
-	    
-	    // DELETE the exam
-	    response = target.path("/exams/" + exam.getId()).request().delete();
-	    assertEquals(200, response.getStatus());
-	    
-	    // DELETE: NOT FOUND
-	    response = target.path("/exams/" + exam.getId()).request().delete();
-	    assertEquals(404, response.getStatus());
+		// GET all exams: NO CONTENT
+		Response response = target.path("/exams/all").request().get();
+		assertEquals(204, response.getStatus());
+
+		// POST
+		Teacher teacher = new Teacher("Neri", "Gigli", "neri.gigli@example.com");
+		Response postTeacher = target.path("/teachers").request()
+				.post(Entity.entity(teacher, MediaType.APPLICATION_JSON));
+		teacher.setId(postTeacher.readEntity(Teacher.class).getId());
+
+		// POST: Create a new course
+		Course course = new Course("AST", "Automated Software Testing", teacher);
+		response = target.path("/courses").request().post(Entity.entity(course, MediaType.APPLICATION_JSON));
+		assertEquals(201, response.getStatus());
+		course.setId(response.readEntity(Course.class).getId());
+
+		Exam exam = new Exam(course, LocalDate.of(2025, 5, 20));
+		response = target.path("/exams").request().post(Entity.entity(exam, MediaType.APPLICATION_JSON));
+		assertEquals(201, response.getStatus());
+		exam.setId(response.readEntity(Exam.class).getId());
+
+		// GET exam by ID
+		response = target.path("/exams/id/" + exam.getId()).request().get();
+		assertEquals(200, response.getStatus());
+		Exam retrievedExam = response.readEntity(Exam.class);
+		assertEquals(exam.getDate(), retrievedExam.getDate());
+		assertEquals(exam.getCourse().getId(), retrievedExam.getCourse().getId());
+
+		// GET by ID: NOT FOUND
+		response = target.path("/exams/id/2").request().get();
+		assertEquals(404, response.getStatus());
+
+		// GET exams for a course
+		Exam exam2 = new Exam(course, LocalDate.of(2025, 6, 15));
+		response = target.path("/exams").request().post(Entity.entity(exam2, MediaType.APPLICATION_JSON));
+		exam2.setId(response.readEntity(Exam.class).getId());
+
+		response = target.path("/exams/course/" + course.getId()).request().get();
+		assertEquals(200, response.getStatus());
+		List<LocalDate> examDates = response.readEntity(new GenericType<List<LocalDate>>() {
+		});
+		assertThat(examDates).containsExactlyInAnyOrder(exam.getDate(), exam2.getDate());
+
+		// GET exams for a course: NO CONTENT
+		response = target.path("/exams/course/999").request().get();
+		assertEquals(204, response.getStatus());
+
+		// GET exams on a specific date
+		response = target.path("/exams/date/2025-05-20").request().get();
+		assertEquals(200, response.getStatus());
+		List<Course> coursesOnDate = response.readEntity(new GenericType<List<Course>>() {
+		});
+		assertThat(coursesOnDate).containsExactly(course);
+
+		// GET exams on a specific date: NO CONTENT
+		response = target.path("/exams/date/2025-06-10").request().get();
+		assertEquals(204, response.getStatus());
+
+		// DELETE the exam
+		response = target.path("/exams/" + exam.getId()).request().delete();
+		assertEquals(200, response.getStatus());
+
+		// DELETE: NOT FOUND
+		response = target.path("/exams/" + exam.getId()).request().delete();
+		assertEquals(404, response.getStatus());
 	}
 
 }
