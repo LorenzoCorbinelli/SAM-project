@@ -41,9 +41,9 @@ The MySQL database is containerized using **Docker**. To start the database cont
 1. Build the application JAR file with dependencies:
    <code>mvn clean package</code>
 2. Launch the application using the generated JAR file:
-   <code>java -jar target/<jar_with_dependencies>.jar</code>
-   
-   Replace `<jar_with_dependencies>` with the actual name of the generated JAR file.
+   <code>java -jar target/examManagement-0.0.1-SNAPSHOT-jar-with-dependencies.jar</code>
+
+Inside the project directory, there is also the [setupData.sh](com.corbinelli.giamberini.examManagement/setupData.sh) file that can be used to insert some records in the DB.
 
 ## API Reference
 ### 👩‍🎓 Student APIs
